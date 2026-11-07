@@ -12,7 +12,7 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 ## Patches
 
 <!-- PATCHES_START -->
-> **[v1.1.0](https://github.com/3rdappsmod/morphe-patches_mod/releases/tag/v1.1.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;7 patches total
+> **[v1.1.0](https://github.com/3rdappsmod/morphe-patches_mod/releases/tag/v1.1.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;6 patches total
 <details>
 <summary>📱 Sony Apps&nbsp;&nbsp;•&nbsp;&nbsp;1 app&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
@@ -106,7 +106,7 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 </details>
 
 <details>
-<summary>📱 ColorOS Apps&nbsp;&nbsp;•&nbsp;&nbsp;2 apps&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<summary>📱 ColorOS Apps&nbsp;&nbsp;•&nbsp;&nbsp;1 app&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 <blockquote>
 
@@ -119,18 +119,6 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 | Patch | Description | Options |
 |----------|----------------|-----------|
 | [Enable non-ColorOS ROM support](#enable-non-coloros-rom-support) | Makes ColorOS Documents installable and usable on non-ColorOS ROMs. |  |
-
-</details>
-
-<details>
-<summary><img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
-<br>
-
-**Supported version(s):** 17.0.30
-
-| Patch | Description | Options |
-|----------|----------------|-----------|
-| [Enable non-ColorOS ROM support](#enable-non-coloros-rom-support) | Makes OnePlus Notes installable and usable on non-ColorOS ROMs. |  |
 
 </details>
 

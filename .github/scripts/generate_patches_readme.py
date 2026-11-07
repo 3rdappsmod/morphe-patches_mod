@@ -74,10 +74,6 @@ APP_RENAMES = {
         '<img src="docs/icons/samsung-music.png" width="20" height="20" align="top"> Samsung Music',
         '<img src="docs/icons/samsung-music.png" width="20" height="20" align="top"> Samsung Music',
     ),
-    "com.oneplus.note": (
-        '<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes',
-        '<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes',
-    ),
     "com.duokan.phone.remotecontroller": (
         '<img src="docs/icons/xiaomi-remote.png" width="20" height="20" align="top"> Mi Remote',
         '<img src="docs/icons/xiaomi-remote.png" width="20" height="20" align="top"> Mi Remote',

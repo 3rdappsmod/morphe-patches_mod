@@ -62,6 +62,48 @@ public final class ColorOS {
         if (wrapper != null && wrapped != null) WRAPPED.put(wrapper, wrapped);
     }
 
+    /**
+     * Drops the document-conversion entries from a Tools / New Document list. The app builds them from ColorOS's
+     * conversion service, which is absent here, so the entries would open a sheet with nothing usable in it. Both
+     * entries are recognised by their ids (ToolBean's EnumId): the "File conversion" group title and the individual
+     * PDF / Word / Excel / PowerPoint directions.
+     */
+    public static java.util.ArrayList<?> withoutConversion(java.util.ArrayList<?> list) {
+        if (list == null) return null;
+        java.util.ArrayList<Object> kept = new java.util.ArrayList<>(list.size());
+        for (Object bean : list) {
+            if (bean == null) continue;
+            String id = String.valueOf(enumName(bean));
+            if (id.equals("ID_FORMAT_CONVERT") || id.startsWith("ID_CONVERT_TO_")) continue;
+            kept.add(bean);
+        }
+        return kept;
+    }
+
+    /** The name of the enum an app bean (ToolBean's subclasses) carries, or "". */
+    private static String enumName(Object bean) {
+        // ToolBean subclasses answer getEnumId() (obfuscated to b()) from their EnumId field (obfuscated to c).
+        try {
+            Object value = bean.getClass().getMethod("b").invoke(bean);
+            if (value instanceof Enum) return ((Enum<?>) value).name();
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
+            // Fall through to the field.
+        }
+        for (Class<?> c = bean.getClass(); c != null; c = c.getSuperclass()) {
+            try {
+                java.lang.reflect.Field field = c.getDeclaredField("c");
+                field.setAccessible(true);
+                Object value = field.get(bean);
+                return value instanceof Enum ? ((Enum<?>) value).name() : "";
+            } catch (NoSuchFieldException ignored) {
+                // Try the superclass.
+            } catch (ReflectiveOperationException | RuntimeException ignored) {
+                return "";
+            }
+        }
+        return "";
+    }
+
     /** The Android object [wrapper] was constructed around, or null. */
     public static <T> T wrapped(Object wrapper, Class<T> type) {
         Object value = WRAPPED.get(wrapper);

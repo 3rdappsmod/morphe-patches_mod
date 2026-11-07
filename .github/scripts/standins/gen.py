@@ -6,8 +6,8 @@ import known
 # answering "absent" off that vendor's ROM unless known.py says otherwise. See README.md.
 ap = argparse.ArgumentParser()
 ap.add_argument('work', help="Missing.java's output dir (usage.json, abstract.json)")
-ap.add_argument('out', help='the extension\'s java source dir, e.g. extensions/colorosnotes/src/main/java')
-ap.add_argument('app', help='app name for the header comment, e.g. "OnePlus Notes"')
+ap.add_argument('out', help='the extension\'s java source dir, e.g. extensions/colorosdocuments/src/main/java')
+ap.add_argument('app', help='app name for the header comment, e.g. "OnePlus Documents"')
 ap.add_argument('--apk', help='the app APK: its manifest components give stand-ins their Android base class')
 ap.add_argument('--extends', help='file of "Lclass; Lsuperclass;" lines that override every inferred base')
 ap.add_argument('--runtime', help='also write the vendor runtime classes (known.RUNTIME_DIR) into this Java package')
