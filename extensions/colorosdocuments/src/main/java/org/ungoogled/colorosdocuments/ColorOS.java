@@ -184,6 +184,16 @@ public final class ColorOS {
         }
     }
 
+    /** A compatibility jamo takes its own advance instead of the one shared with CJK characters. */
+    public static float jamoWidth(Object metrics, char c, float cached) {
+        return org.ungoogled.colorosdocuments.MonoWidths.widthForChar(metrics, c, cached);
+    }
+
+    /** Undoes the shared advance when a compatibility jamo was the character that seeded it. */
+    public static void clearJamoSeed(Object metrics, char c) {
+        org.ungoogled.colorosdocuments.MonoWidths.clearJamoSeed(metrics, c);
+    }
+
     /**
      * A stand-in of a ColorOS interface (a system service's binder interface, ...) whose calls answer "absent"
      * (false / 0 / null), with Android's own answers for the few that have one.

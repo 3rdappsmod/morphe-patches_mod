@@ -60,15 +60,6 @@ private object PathValidationFingerprint : Fingerprint(
 )
 
 /**
- * ASUS File Manager on a phone from another maker.
- *
- * Three things tie the app to ASUS: its version check, which reads resources out of the ASUS update service's APK and
- * dies with NoClassDefFoundError where that service is missing; "All files access", which the app holds as a system
- * app on a ZenFone; and a path check that only accepts ASUS's /storage layout, which makes a USB drive crash the home
- * screen on a phone that reports its raw vold mount. The version check is answered "up to date" and the dialog is
- * skipped, the activity asks for storage access on start, and the path check accepts the raw mount too.
- */
-/**
  * ZenUI is ASUS's own launcher and settings app; the file manager only names it as an optional feature, but the
  * required flag alone would stop the install. "All files access" is what the file manager needs to browse the phone.
  */
@@ -105,6 +96,15 @@ private val manifestPatch = resourcePatch(
     }
 }
 
+/**
+ * ASUS File Manager on a phone from another maker.
+ *
+ * Three things tie the app to ASUS: its version check, which reads resources out of the ASUS update service's APK and
+ * dies with NoClassDefFoundError where that service is missing; "All files access", which the app holds as a system
+ * app on a ZenFone; and a path check that only accepts ASUS's /storage layout, which makes a USB drive crash the home
+ * screen on a phone that reports its raw vold mount. The version check is answered "up to date" and the dialog is
+ * skipped, the activity asks for storage access on start, and the path check accepts the raw mount too.
+ */
 @Suppress("unused")
 val enableNonAsusPatch = bytecodePatch(
     name = "Enable non-ASUS ROM support",

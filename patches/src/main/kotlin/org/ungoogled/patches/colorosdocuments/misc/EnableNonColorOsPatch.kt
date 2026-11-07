@@ -385,6 +385,89 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.keepSansSerifFamily() 
 }
 
 /**
+ * `getMonospacedCharWidth(char, d, int)` — the fixed-width path a compatibility jamo reaches.
+ *
+ * `o.v()` answers `0x60000000` for U+3100..DFFF and U+2E80..2FFF alike, so CJK ideographs and Hangul share one class
+ * and one cached advance in the `monospacedWidth` field.
+ */
+private object MonospacedWidthFingerprint : Fingerprint(
+    definingClass = "Lemo/commonkit/font/EIOFontMetrics;",
+    name = "getMonospacedCharWidth",
+    returnType = "F",
+    parameters = listOf("C", "Lemo/simpletext/view/d;", "I"),
+)
+
+/**
+ * Fixes Hangul compatibility jamo overlapping while a syllable is composed in Word and Excel.
+ *
+ * `o.v()` classifies U+3100..DFFF as one class, which covers both CJK ideographs and Hangul, and
+ * `getMonospacedCharWidth` keeps a single advance for that class in `monospacedWidth`. The first character to arrive
+ * seeds it and every later character is laid out with that value. Measured on the device: ㅂ seeds 25.0, then ㄴ
+ * (26.0) and ㄹ (28.0) are still given 25.0, so a composing jamo run is drawn narrower than its glyphs and the letters
+ * pile up.
+ *
+ * Two hooks, both using registers that are already live where they are inserted:
+ *
+ *  - At `:goto_0` the shared advance is read into a float register and then corrected by `b(width, d)` and the
+ *    letter-spacing cases below. Replacing that read keeps every existing correction for jamo, so this changes the
+ *    advance and nothing else. `p0` is still `this` and `p1` still the char there; both are overwritten later in the
+ *    body, which is why a hook at a `return` broke the verifier in an earlier build.
+ *  - Right after the seed write, a jamo seed is undone. Without this the first jamo of a document would define the
+ *    advance that ideographs and precomposed syllables inherit.
+ */
+private fun app.morphe.patcher.patch.BytecodePatchContext.fixHangulJamoWidths() {
+    val method = MonospacedWidthFingerprint.method
+    val instructions = method.instructions
+
+    fun fieldName(instruction: com.android.tools.smali.dexlib2.builder.BuilderInstruction): String? =
+        ((instruction as? com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction)
+            ?.reference as? com.android.tools.smali.dexlib2.iface.reference.FieldReference)?.name
+
+    // The first read is the `monospacedWidth == -2.0f` test; the second is `:goto_0`, which supplies the width.
+    val reads = instructions.withIndex()
+        .filter {
+            it.value.opcode == com.android.tools.smali.dexlib2.Opcode.IGET &&
+                fieldName(it.value) == "monospacedWidth"
+        }
+        .map { it.index }
+    if (reads.size < 2) {
+        throw PatchException("getMonospacedCharWidth no longer reads monospacedWidth twice (found ${reads.size})")
+    }
+    val read = reads[1]
+    val width = (instructions[read] as com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction).registerA
+    method.addInstructions(
+        read + 1,
+        """
+            invoke-static {p0, p1, v$width}, $RUNTIME->jamoWidth(Ljava/lang/Object;CF)F
+            move-result v$width
+        """.trimIndent(),
+    )
+    log.info("compatibility jamo measured individually at index $read (width=v$width)")
+
+    // The seed write is `iput monospacedWidth` followed by `iput-char monospacedWidthC`. Every such pair has to be
+    // covered: the body has three (the initial seed and two rewrites for the 0xA4B3 case), and hooking only the first
+    // left the cache seeded by a jamo at another site -- measured as cached=33.0 where the jamo itself is 28.0.
+    val seeds = instructions.withIndex()
+        .filter {
+            it.value.opcode == com.android.tools.smali.dexlib2.Opcode.IPUT_CHAR &&
+                fieldName(it.value) == "monospacedWidthC"
+        }
+        .map { it.index }
+        .toList()
+    if (seeds.isEmpty()) {
+        throw PatchException("getMonospacedCharWidth no longer records which character seeded the advance")
+    }
+    // Descending order so each insertion keeps the indexes of the ones still to be placed valid.
+    for (seed in seeds.sortedDescending()) {
+        method.addInstructions(
+            seed + 1,
+            "invoke-static {p0, p1}, $RUNTIME->clearJamoSeed(Ljava/lang/Object;C)V",
+        )
+    }
+    log.info("jamo seeds of the shared advance undone at ${seeds.size} sites: $seeds")
+}
+
+/**
  * Sends a Chinese face's width table lookup to "sans-serif", which `s.c` does not know, so it answers null and
  * `EIOFontMetrics.getReferenceCharWidth` measures the face the app actually draws. Without this the drawn font and the
  * measured font disagree, which is what makes the letters overlap.
@@ -457,7 +540,7 @@ val enableNonColorOsPatch = bytecodePatch(
 
     val bufferScale by stringOption(
         key = "bufferScale",
-        default = "stock",
+        default = "half",
         values = mapOf(
             "Stock (1.5x wide, 3x tall)" to "stock",
             "Smaller (1.25x wide, 2x tall)" to "small",
@@ -472,7 +555,7 @@ val enableNonColorOsPatch = bytecodePatch(
 
     val bufferInterval by intOption(
         key = "bufferInterval",
-        default = 17,
+        default = 8,
         values = mapOf("60 Hz (17 ms)" to 17, "90 Hz (11 ms)" to 11, "120 Hz (8 ms)" to 8),
         title = "Page buffer refresh interval",
         description = "How often the off-screen page is redrawn while scrolling. Match the phone's display refresh " +
@@ -530,6 +613,7 @@ val enableNonColorOsPatch = bytecodePatch(
         // Font engine: keep "sans-serif" as its own family, and measure Chinese document faces with the drawn font.
         keepSansSerifFamily()
         dropMissingFontWidthTables()
+        fixHangulJamoWidths()
 
         log.info("ColorOS framework classes answered by the extension")
     }
