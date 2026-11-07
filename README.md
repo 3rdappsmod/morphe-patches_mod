@@ -12,7 +12,59 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 ## Patches
 
 <!-- PATCHES_START -->
-> **[v1.1.0](https://github.com/3rdappsmod/morphe-patches_mod/releases/tag/v1.1.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;10 patches total
+> **[v1.1.0](https://github.com/3rdappsmod/morphe-patches_mod/releases/tag/v1.1.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;13 patches total
+<details>
+<summary>📱 Sony Apps&nbsp;&nbsp;•&nbsp;&nbsp;1 app&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+<blockquote>
+
+<details>
+<summary><img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported version(s):** 9.4.17.A.0.11
+
+| Patch | Description | Options |
+|----------|----------------|-----------|
+| [Enable non-Xperia ROM support](#enable-non-xperia-rom-support) | Makes Xperia Music installable and usable on phones from other makers. |  |
+
+</details>
+
+</blockquote>
+</details>
+
+<details>
+<summary>📱 ASUS Apps&nbsp;&nbsp;•&nbsp;&nbsp;2 apps&nbsp;&nbsp;•&nbsp;&nbsp;2 patches</summary>
+<br>
+<blockquote>
+
+<details>
+<summary><img src="docs/icons/asus-file-manager.png" width="20" height="20" align="top"> ASUS File Manager&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/asus-file-manager.png" width="20" height="20" align="top"> ASUS File Manager&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported version(s):** 2.12.0.60_250822
+
+| Patch | Description | Options |
+|----------|----------------|-----------|
+| [Enable non-ASUS ROM support](#enable-non-asus-rom-support) | Makes ASUS File Manager installable and usable on phones from other makers. |  |
+
+</details>
+
+<details>
+<summary><img src="docs/icons/asus-gallery.png" width="20" height="20" align="top"> ASUS Gallery&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/asus-gallery.png" width="20" height="20" align="top"> ASUS Gallery&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported version(s):** 3.8.0.98_250909
+
+| Patch | Description | Options |
+|----------|----------------|-----------|
+| [Enable non-ASUS ROM support](#enable-non-asus-rom-support) | Makes ASUS Gallery installable and usable on phones from other makers. |  |
+
+</details>
+
+</blockquote>
+</details>
+
 <details>
 <summary>📱 Samsung Apps&nbsp;&nbsp;•&nbsp;&nbsp;2 apps&nbsp;&nbsp;•&nbsp;&nbsp;8 patches</summary>
 <br>
@@ -84,6 +136,18 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 </details>
 
 <!-- PATCHES_END -->
+
+## Planned
+
+These are next on the list and are not patched yet.
+
+- **ColorOS IR Remote** (`com.oplus.consumerIRApp`) - the app's offline remote database and its OPPO authentication
+  are still unsolved, so a patch here would only get the UI running.
+- **ColorOS OSee scanner** (`com.coloros.ocrscanner`) - the OCR and image engines come from `com.oplus.aiunit` and
+  `com.coloros.baseocrscanner`, and whether they work off ColorOS has not been verified.
+- **ColorOS Documents** (`andes.oplus.documentsreader`) - saving new documents needs the ColorOS file manager; the
+  app's own save picker is the workaround under test.
+
 
 ## Building
 

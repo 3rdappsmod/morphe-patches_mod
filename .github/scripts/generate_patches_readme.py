@@ -44,6 +44,9 @@ def pkg_emoji(pkg):
 # Phone makers' own apps, each maker's listed together under one spoiler: (title, name prefix dropped when sorting,
 # package prefixes, packages without the maker's prefix).
 VENDOR_GROUPS = [
+    # Sony's Xperia apps: Music is the only one patched so far.
+    ("Sony Apps", "sony ", ("com.sonyericsson.",), ()),
+    ("ASUS Apps", "asus ", ("com.asus.",), ()),
     ("Samsung Apps", "samsung ", ("com.samsung.", "com.sec."), ()),
     # OPPO's ColorOS, also OnePlus's OxygenOS and realme UI: apps carry the OnePlus or OPPO name.
     ("ColorOS Apps", ("oneplus ", "oppo ", "coloros ", "realme "),
@@ -74,6 +77,18 @@ APP_RENAMES = {
     "com.oneplus.note": (
         '<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes',
         '<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes',
+    ),
+    "com.asus.gallery": (
+        '<img src="docs/icons/asus-gallery.png" width="20" height="20" align="top"> ASUS Gallery',
+        '<img src="docs/icons/asus-gallery.png" width="20" height="20" align="top"> ASUS Gallery',
+    ),
+    "com.asus.filemanager": (
+        '<img src="docs/icons/asus-file-manager.png" width="20" height="20" align="top"> ASUS File Manager',
+        '<img src="docs/icons/asus-file-manager.png" width="20" height="20" align="top"> ASUS File Manager',
+    ),
+    "com.sonyericsson.music": (
+        '<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music',
+        '<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music',
     ),
     "com.oneplus.soundrecorder": (
         '<img src="docs/icons/coloros-recorder.png" width="20" height="20" align="top"> OnePlus Recorder',
