@@ -1,6 +1,7 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
-  "version": "2.10.0",
+<<<<<<< HEAD
+  "version": "2.9.4",
   "patches": [
     {
       "name": "120 refresh rate",
@@ -22,10 +23,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -82,10 +83,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -95,7 +96,7 @@
     },
     {
       "name": "Add microG-RE support",
-      "description": "Builds microG Gmail, a separate app next to the built-in Gmail that signs in through microG-RE. Not for root installs.",
+      "description": "Builds microG Gmail, a separate app that signs in to your Google account through microG-RE. Not for root installs.",
       "default": false,
       "category": "microG-RE",
       "dependencies": [
@@ -121,17 +122,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "keepIconAndName",
-          "title": "Keep Gmail's icon and name",
-          "description": "No microG badge on the icon and no \"microG\" in the name. Still a separate app.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
       "name": "Add microG-RE support",
@@ -155,36 +146,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Add microG-RE support",
-      "description": "Builds microG Photos, a separate app that signs in to your Google account through microG-RE. Not for root installs.",
-      "default": false,
-      "category": "microG-RE",
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.photos",
-          "name": "Google Photos",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.1.0.1016919706",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -193,17 +155,7 @@
           ]
         }
       ],
-      "options": [
-        {
-          "key": "keepIconAndName",
-          "title": "Keep Photos's icon and name",
-          "description": "No microG badge on the icon and no \"microG\" in the name. Still a separate app.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
+      "options": []
     },
     {
       "name": "Add original microG support",
@@ -223,10 +175,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -251,13 +203,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -293,16 +238,7 @@
         {
           "key": "police",
           "title": "Police",
-          "description": "Waze: 600 to 900 m.",
-          "required": false,
-          "type": "kotlin.Int",
-          "default": 1000,
-          "values": null
-        },
-        {
-          "key": "cameras",
-          "title": "Speed cameras",
-          "description": "Every kind of camera. Waze: 400 to 900 m.",
+          "description": "Waze: 600 m.",
           "required": false,
           "type": "kotlin.Int",
           "default": 1000,
@@ -337,8 +273,8 @@
         },
         {
           "key": "streets",
-          "title": "Enforcement zones on streets",
-          "description": "Where Waze shows zones, not cameras. Waze: 500 m.",
+          "title": "Speed cameras on streets",
+          "description": "Waze: 500 m.",
           "required": false,
           "type": "kotlin.Int",
           "default": 700,
@@ -346,8 +282,8 @@
         },
         {
           "key": "highways",
-          "title": "Enforcement zones on highways",
-          "description": "Where Waze shows zones, not cameras. Waze: 1000 m.",
+          "title": "Speed cameras on highways",
+          "description": "Waze: 1000 m.",
           "required": false,
           "type": "kotlin.Int",
           "default": 900,
@@ -355,8 +291,8 @@
         },
         {
           "key": "freeways",
-          "title": "Enforcement zones on freeways",
-          "description": "Where Waze shows zones, not cameras. Waze: 2000 m.",
+          "title": "Speed cameras on freeways",
+          "description": "Waze: 2000 m.",
           "required": false,
           "type": "kotlin.Int",
           "default": 1200,
@@ -400,13 +336,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -440,6 +369,11 @@
       "options": []
     },
     {
+=======
+  "version": "1.1.0",
+  "patches": [
+    {
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
       "name": "Always incognito",
       "description": "Never learns from what you type.",
       "default": false,
@@ -460,55 +394,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -516,6 +401,7 @@
       "options": []
     },
     {
+<<<<<<< HEAD
       "name": "Always use GIPHY",
       "description": "Shows GIPHY GIFs in every language.",
       "default": true,
@@ -610,10 +496,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -638,13 +524,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -711,10 +590,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -770,10 +649,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -828,13 +707,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -878,82 +750,6 @@
       ]
     },
     {
-      "name": "Bigger size range",
-      "description": "Lets the keyboard be resized smaller and taller.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Bigger speedometer",
       "description": "Bigger speedometer and speed limit digits.",
       "default": true,
@@ -971,13 +767,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -1111,8 +900,7 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -1124,10 +912,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -1178,115 +966,16 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
         }
       ],
       "options": []
-    },
-    {
-      "name": "Build SBoard",
-      "description": "Builds SBoard, its own keyboard app with its own name and icon.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [
-        "BytecodePatch",
-        "BytecodePatch",
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "packageName",
-          "title": "Package name",
-          "description": "Must be a valid Android package name.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "org.ungoogled.sboard",
-          "values": null
-        },
-        {
-          "key": "appName",
-          "title": "App name",
-          "description": "Shown in the keyboard list and App info.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "SBoard",
-          "values": null
-        }
-      ]
     },
     {
       "name": "Bypass Play Services checks",
@@ -1307,10 +996,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -1371,10 +1060,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -1430,6 +1119,8 @@
       ]
     },
     {
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
       "name": "Change app name",
       "description": "Renames Samsung Keyboard, so the two keyboards can be told apart.",
       "default": true,
@@ -1446,55 +1137,6 @@
           "targets": [
             {
               "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1516,6 +1158,7 @@
       ]
     },
     {
+<<<<<<< HEAD
       "name": "Change app name",
       "description": "Renames Waze.",
       "default": true,
@@ -1530,13 +1173,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -1676,10 +1312,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -1698,6 +1334,8 @@
       ]
     },
     {
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
       "name": "Change package name",
       "description": "Installs next to Samsung's own Samsung Capture on Galaxy phones (One UI Core).",
       "default": false,
@@ -1719,8 +1357,8 @@
               "version": "6.2.12",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -1744,7 +1382,6 @@
       "category": null,
       "dependencies": [
         "BytecodePatch",
-        "BytecodePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -1758,55 +1395,6 @@
           "targets": [
             {
               "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1826,134 +1414,6 @@
           "values": null
         }
       ]
-    },
-    {
-      "name": "Custom icon",
-      "description": "Replaces the launcher icon with a PDF icon or your own image.",
-      "default": false,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "io.github.artcraftandroid.pdfcraft",
-          "name": "PdfCraft",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#B70228",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "design",
-          "title": "Icon",
-          "description": "Built-in icon to use.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "red",
-          "values": {
-            "Red PDF": "red",
-            "Blue PDF": "blue",
-            "Dark page": "dark"
-          }
-        },
-        {
-          "key": "image",
-          "title": "Your own image",
-          "description": "Path to a square PNG, JPG or WebP. Used instead of the icon above.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": null,
-          "values": null
-        },
-        {
-          "key": "background",
-          "title": "Background",
-          "description": "Colour behind your own image.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#FFFFFF",
-          "values": null
-        },
-        {
-          "key": "fill",
-          "title": "Fill the whole icon",
-          "description": "Your own image covers the icon edge to edge instead of sitting inside it.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Customization screen",
-      "description": "Adds a Customization row under Settings on the account sheet and at the top of Settings, with switches for the patches here that can be turned back off inside the app.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.maps",
-          "name": "Google Maps",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "26.44.06.1006895251",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable telemetry",
-      "description": "Turns off Samsung Analytics and crash reports.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.sec.android.gallery3d",
-          "name": "Samsung Gallery",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#F0466E",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "15.9.01.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
     },
     {
       "name": "Disable telemetry",
@@ -1976,6 +1436,7 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+<<<<<<< HEAD
             },
             {
               "version": "5.9.40.48",
@@ -2077,37 +1538,8 @@
               "version": "8.1.00.6",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable telemetry",
-      "description": "Turns off Samsung Analytics and crash reports.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.videolist",
-          "name": "Samsung Video Library",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#6E269D",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.4.22.81",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -2119,9 +1551,7 @@
       "description": "Makes OnePlus Calculator installable and usable on non-ColorOS ROMs.",
       "default": true,
       "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.oneplus.calculator",
@@ -2149,7 +1579,6 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "ResourcePatch",
         "ResourcePatch"
       ],
@@ -2179,9 +1608,7 @@
       "description": "Makes OnePlus Compass installable and usable on non-ColorOS ROMs.",
       "default": true,
       "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.coloros.compass2",
@@ -2209,7 +1636,6 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "ResourcePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -2244,9 +1670,7 @@
       "description": "Makes OnePlus Documents installable and usable on non-ColorOS ROMs.",
       "default": true,
       "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "andes.oplus.documentsreader",
@@ -2274,7 +1698,6 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "BytecodePatch",
         "ResourcePatch",
         "BytecodePatch",
@@ -2316,16 +1739,10 @@
       "category": null,
       "dependencies": [
         "BytecodePatch",
-        "BytecodePatch",
         "ResourcePatch",
         "ResourcePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "ResourcePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -2364,9 +1781,7 @@
       "description": "Makes OnePlus My Files installable and usable on non-ColorOS ROMs.",
       "default": true,
       "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.oneplus.filemanager",
@@ -2382,6 +1797,8 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
             }
           ]
         }
@@ -2394,7 +1811,6 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -2407,7 +1823,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "16.6.14",
+              "version": "17.0.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2423,9 +1839,7 @@
       "description": "Makes OnePlus Recorder installable and usable on non-ColorOS ROMs.",
       "default": true,
       "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.oneplus.soundrecorder",
@@ -2436,6 +1850,7 @@
           "signatures": null,
           "targets": [
             {
+<<<<<<< HEAD
               "version": "16.17.6",
               "versionCodes": null,
               "isExperimental": false,
@@ -2453,7 +1868,6 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "ResourcePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -2486,7 +1900,6 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
@@ -2584,10 +1997,6 @@
         "ResourcePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -2618,7 +2027,6 @@
       "category": null,
       "dependencies": [
         "ResourcePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
@@ -2656,7 +2064,6 @@
         "ResourcePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -2674,13 +2081,6 @@
               "isExperimental": false,
               "minSdk": 34,
               "description": "needs Android 14 or newer"
-            },
-            {
-              "version": "RELEASE-5.39.40.11727-12151939",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
             }
           ]
         }
@@ -2694,7 +2094,6 @@
       "category": null,
       "dependencies": [
         "ResourcePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -2823,7 +2222,6 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -3316,9 +2714,7 @@
       "description": "Makes Nothing Gallery usable on non-Nothing OS ROMs.",
       "default": true,
       "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.nothing.gallery",
@@ -3382,13 +2778,6 @@
               "isExperimental": false,
               "minSdk": 35,
               "description": "needs Android 15 or newer"
-            },
-            {
-              "version": "2.2.8",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
             }
           ]
         }
@@ -3460,8 +2849,7 @@
       "category": null,
       "dependencies": [
         "ResourcePatch",
-        "BytecodePatch",
-        "ResourcePatch"
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -3476,8 +2864,8 @@
               "version": "12.4.00.13",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -3496,8 +2884,7 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -3541,7 +2928,6 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -3557,8 +2943,8 @@
               "version": "6.2.12",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -3573,7 +2959,6 @@
       "dependencies": [
         "ResourcePatch",
         "ResourcePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
       ],
@@ -3590,8 +2975,8 @@
               "version": "12.4.02.38",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -3611,10 +2996,7 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -3629,43 +3011,8 @@
               "version": "16.3.00.87",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable non-One UI ROM support",
-      "description": "Makes Samsung Editor Lite usable on non-One UI ROMs.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.app.newtrim",
-          "name": "Samsung Editor Lite",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#F52B5F",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "4.0.85.20",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -3679,8 +3026,6 @@
       "category": null,
       "dependencies": [
         "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
@@ -3708,50 +3053,11 @@
     },
     {
       "name": "Enable non-One UI ROM support",
-      "description": "Makes Samsung Finder installable and usable on non-One UI ROMs.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.app.galaxyfinder",
-          "name": "Samsung Finder",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#0088AA",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "10.2.13.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": "needs Android 10 or newer"
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable non-One UI ROM support",
       "description": "Makes Samsung Gallery installable and usable on non-One UI ROMs.",
       "default": true,
       "category": null,
       "dependencies": [
         "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
       ],
@@ -3878,9 +3184,6 @@
       "dependencies": [
         "ResourcePatch",
         "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
       ],
@@ -4013,8 +3316,7 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -4027,10 +3329,13 @@
           "targets": [
             {
               "version": "16.3.21.1",
+=======
+              "version": "17.7.16",
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -4071,6 +3376,7 @@
       "options": []
     },
     {
+<<<<<<< HEAD
       "name": "Enable non-One UI ROM support",
       "description": "Makes Samsung My Files installable and usable on non-One UI ROMs.",
       "default": true,
@@ -4081,7 +3387,6 @@
         "BytecodePatch",
         "BytecodePatch",
         "ResourcePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
       ],
@@ -4098,8 +3403,8 @@
               "version": "15.2.03.2",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 34,
+              "description": "needs Android 14 or newer"
             }
           ]
         }
@@ -4153,8 +3458,6 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -4170,8 +3473,8 @@
               "version": "9.3.13.0",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 34,
+              "description": "needs Android 14 or newer"
             }
           ]
         }
@@ -4194,8 +3497,7 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -4210,8 +3512,8 @@
               "version": "16.3.52.1",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -4226,9 +3528,7 @@
       "dependencies": [
         "ResourcePatch",
         "BytecodePatch",
-        "BytecodePatch",
         "ResourcePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
@@ -4248,13 +3548,6 @@
               "isExperimental": false,
               "minSdk": 35,
               "description": "needs Android 15 or newer"
-            },
-            {
-              "version": "3.4.14.63",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
             }
           ]
         }
@@ -4272,8 +3565,7 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -4288,8 +3580,8 @@
               "version": "12.8.00.62",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -4315,8 +3607,6 @@
         "BytecodePatch",
         "BytecodePatch",
         "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -4332,8 +3622,8 @@
               "version": "5.1.03.1",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -4383,7 +3673,6 @@
       "dependencies": [
         "BytecodePatch",
         "ResourcePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -4399,46 +3688,8 @@
               "version": "8.1.00.6",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable non-One UI ROM support",
-      "description": "Makes Samsung Video Library installable on Android 15+ and usable on non-One UI ROMs.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch",
-        "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.videolist",
-          "name": "Samsung Video Library",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#6E269D",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.4.22.81",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -4456,9 +3707,7 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch"
+        "ResourcePatch"
       ],
       "compatiblePackages": [
         {
@@ -4473,8 +3722,8 @@
               "version": "7.3.47.1",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -4488,9 +3737,6 @@
       "category": null,
       "dependencies": [
         "ResourcePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch"
@@ -4508,8 +3754,8 @@
               "version": "21.5.91.33",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
@@ -4523,7 +3769,6 @@
       "category": null,
       "dependencies": [
         "ResourcePatch",
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -4587,7 +3832,6 @@
       "default": true,
       "category": null,
       "dependencies": [
-        "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -4842,46 +4086,6 @@
       "options": []
     },
     {
-      "name": "Extra compact list",
-      "description": "Tightens the conversation list (all densities) so more mail fits on screen.",
-      "default": false,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.gm",
-          "name": "Gmail",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "2026.11.02.1012472355.Release",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "squareAvatars",
-          "title": "Square sender pictures",
-          "description": "Sender pictures in the conversation list as squares, as before 2014.",
-          "required": false,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
       "name": "Extract text",
       "description": "Brings back Extract text with an on-device text recognizer.",
       "default": true,
@@ -4912,158 +4116,6 @@
       "options": []
     },
     {
-      "name": "Faster backspace",
-      "description": "Backspace deletes twice as fast at every speed.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Faster suggestion animations",
-      "description": "Halves the suggestion bar's animation time.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Flock cameras",
       "description": "Puts Flock and other license plate reader cameras on the map, from OpenStreetMap -- the cameras DeFlock's volunteers map -- and chimes and shows a note when one is coming up ahead. Off until turned on in Waze & external data source, a row on the account sheet, because it downloads the ones near you from an OpenStreetMap server, over the same area as the speed cameras.",
       "default": true,
@@ -5081,10 +4133,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -5109,13 +4161,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -5168,10 +4213,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -5196,13 +4241,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -5308,337 +4346,6 @@
       "options": []
     },
     {
-      "name": "Hide AI",
-      "description": "Hides Ask Photos, Gemini, Help me edit, Magic Editor, Remix and the other generative tools.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.photos",
-          "name": "Google Photos",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.1.0.1016919706",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide Bitmoji and mojitok",
-      "description": "Removes the Bitmoji and mojitok sticker services.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide Galaxy AI",
-      "description": "Removes Galaxy AI from the toolbar, stickers and settings.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide Samsung Pass",
-      "description": "Removes the Samsung Pass button from the toolbar.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide Translate",
-      "description": "Removes the Translate button from the toolbar.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Hide Work shortcut",
       "description": "Removes the Work button when choosing a destination.",
       "default": false,
@@ -5655,13 +4362,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -5740,13 +4440,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -5801,137 +4494,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide end of support notice",
-      "description": "Removes the notice that Samsung discontinued the app.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.videolist",
-          "name": "Samsung Video Library",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#6E269D",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "1.4.22.81",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 33,
-              "description": "needs Android 13 or newer"
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide new badges",
-      "description": "Removes the \"new\" dots from the toolbar and emoji tabs.",
-      "default": true,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide promos",
-      "description": "Hides Google One storage offers, backup nags, print offers and \"try this\" promos.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.photos",
-          "name": "Google Photos",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.1.0.1016919706",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -5965,158 +4528,6 @@
               "isExperimental": false,
               "minSdk": 30,
               "description": "needs Android 11 or newer"
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide store links",
-      "description": "Removes the Galaxy Store sticker button and Contact us.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide tips",
-      "description": "Stops the keyboard's pop-up tips.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -6267,82 +4678,6 @@
       "options": []
     },
     {
-      "name": "Key vibration length",
-      "description": "Adds a key vibration length slider to Touch feedback (One UI).",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Legacy icon",
       "description": "Uses the flat multicolour pin Maps had before the 2025 gradient icon as the launcher icon and on the screen Maps opens with. With Add microG-RE support, microG's C sits in the pin's circle.",
       "default": true,
@@ -6358,41 +4693,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Light map",
-      "description": "Adds a Customization switch that keeps the map light while Maps' menus are dark.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.maps",
-          "name": "Google Maps",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "26.44.06.1006895251",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -6423,10 +4727,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -6445,37 +4749,6 @@
       ]
     },
     {
-      "name": "Map region",
-      "description": "Adds a Customization option to pick the country the map's names and borders are shown for.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.maps",
-          "name": "Google Maps",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "26.44.06.1006895251",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Map skin",
       "description": "Bigger map labels, a wider arrow and a warm day background.",
       "default": true,
@@ -6492,13 +4765,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -6605,13 +4871,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -6672,33 +4931,6 @@
       ]
     },
     {
-      "name": "Mark as read in notifications",
-      "description": "Adds Mark as read to new-mail notifications of Exchange, IMAP and POP3 accounts.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.gm",
-          "name": "Gmail",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "2026.11.02.1012472355.Release",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Media panel can be closed",
       "description": "Navigation's media button stays above the media controls, so they can be closed again.",
       "default": true,
@@ -6716,106 +4948,16 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
         }
       ],
       "options": []
-    },
-    {
-      "name": "More toolbar buttons",
-      "description": "Shows more buttons on the toolbar before the ... button.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "count",
-          "title": "Buttons",
-          "description": "Samsung's: 7.",
-          "required": true,
-          "type": "kotlin.Int",
-          "default": 9,
-          "values": {
-            "8": 8,
-            "9": 9,
-            "10": 10
-          }
-        }
-      ]
     },
     {
       "name": "Navigation distances",
@@ -6834,13 +4976,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -6920,13 +5055,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -6960,6 +5088,8 @@
       "options": []
     },
     {
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
       "name": "No GIF tracking",
       "description": "Stops GIPHY and Tenor view and share pings.",
       "default": true,
@@ -6980,6 +5110,7 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+<<<<<<< HEAD
             },
             {
               "version": "5.9.40.48",
@@ -7053,13 +5184,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -7120,82 +5244,6 @@
       "options": []
     },
     {
-      "name": "No contacts access",
-      "description": "Removes the contacts permission (names in suggestions).",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Offline saved places",
       "description": "Save places without a Google account, kept only on the phone: Save opens Maps' own \"Place saved\" sheet (Want to go, Travel plans, Starred places, Favorites, your own lists, a note), and a \"Local saved\" row on the account sheet rebuilds Maps' You tab -- your recent places, your lists and labels (Home, Work, your own) -- with export and import (backup file, KML, Google Takeout's saved lists and Saved Places.json, several files or the whole Takeout .zip at once). It also has a Timeline: where the phone has been, grouped into days and visits, kept only on the phone, with GPX export. Recording is off until switched on there; it shows a notification while it runs. With Add microG-RE support, Maps' own Save keeps syncing to your account and Local saved instead copies the account's saved lists to the phone (Pull from Google account).",
       "default": true,
@@ -7214,110 +5262,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "One-handed keyboard on every phone",
-      "description": "Offers the one-handed keyboard mode on every phone.",
-      "default": true,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Open photos in your gallery app",
-      "description": "Opens photos in your gallery app when OPPO's gallery is disabled or removed. Root (mount) install only.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.oplus.camera",
-          "name": "OnePlus Camera",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#1F2229",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -7345,70 +5290,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.27.0.1",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.26.90.901",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.26.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.24.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Patched YouTube Music",
-      "description": "Lets Waze's audio player use YouTube Music patched with Morphe or ReVanced.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.waze",
-          "name": "Waze",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#33CCFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -7444,7 +5325,7 @@
     },
     {
       "name": "Power saving mode",
-      "description": "Brings the Pixel-only power saving mode to every phone: while driving with navigation, press the power button and Maps shows only key information such as the next turn on a black screen. Turn it on or off in Settings > Navigation > Power saving mode. Pixels that have it built in keep Google's own version unless Power saving mode is turned on in Power Saving Options, a row on the account sheet under Customization, which also has: a navigation button that opens the power saving screen without locking the phone, switching to it by itself when idle, the normal screen near turns, a speedometer on it, a lower frame rate, and its black map in navigation or all over Maps.",
+      "description": "Brings the Pixel-only power saving mode to every phone: while driving with navigation, press the power button and Maps shows only key information such as the next turn on a black screen. Turn it on or off in Settings > Navigation > Power saving mode. Pixels that have it built in keep Google's own version unless Power saving mode is turned on in Power Saving Options, a row on the account sheet under Customization, which also has: a navigation button that opens the power saving screen without locking the phone, switching to it by itself when idle, a speedometer on it, a lower frame rate, and its black map in navigation or all over Maps.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -7452,8 +5333,7 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
-        "ResourcePatch"
+        "BytecodePatch"
       ],
       "compatiblePackages": [
         {
@@ -7465,10 +5345,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -7499,83 +5379,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Pure black theme",
-      "description": "Makes the Dark and Solid dark themes pure black.",
-      "default": false,
-      "category": "SBoard",
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.samsung.android.honeyboard",
-          "name": "Samsung Keyboard",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#3E91FF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -7607,10 +5411,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -7697,6 +5501,8 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
             }
           ]
         }
@@ -7751,6 +5557,7 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+<<<<<<< HEAD
             },
             {
               "version": "5.9.40.48",
@@ -7822,10 +5629,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -7848,13 +5655,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -7910,10 +5710,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -7938,13 +5738,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -8092,11 +5885,10 @@
     },
     {
       "name": "Remove telemetry",
-      "description": "Points the Firebase Installations and Play services compliance check-ins at an unresolvable host, turns Firebase Analytics off, stops every ad impression and click ping from being sent, and deregisters Google's logging, performance-monitoring, survey and Location History libraries and the on-device federated-learning services. With Add microG-RE support, Firebase Installations and Location History are left alone, so Timeline, account sync and push messages keep working.",
+      "description": "Points the Firebase Installations and Play services compliance check-ins at an unresolvable host, stops every ad impression and click ping from being sent, and deregisters Google's logging, performance-monitoring, survey and Location History libraries and the on-device federated-learning services. With Add microG-RE support, Firebase Installations and Location History are left alone, so Timeline, account sync and push messages keep working.",
       "default": true,
       "category": null,
       "dependencies": [
-        "ResourcePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -8109,36 +5901,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": 29,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Remove telemetry",
-      "description": "Stops Firebase Analytics, logging, surveys and promo fetches.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.photos",
-          "name": "Google Photos",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "8.1.0.1016919706",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -8151,12 +5914,10 @@
     },
     {
       "name": "Remove telemetry",
-      "description": "Stops Samsung's usage logs, analytics and crash reports, and keeps the app offline until its terms are accepted.",
+      "description": "Stops Samsung's usage logs, analytics, crash reports and autofill crowdsourcing.",
       "default": true,
       "category": null,
-      "dependencies": [
-        "BytecodePatch"
-      ],
+      "dependencies": [],
       "compatiblePackages": [
         {
           "packageName": "com.sec.android.app.sbrowser",
@@ -8196,13 +5957,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -8254,13 +6008,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -8311,10 +6058,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -8385,7 +6132,7 @@
     },
     {
       "name": "Share alerts with Maps",
-      "description": "Shows Waze alerts in Ungoogled Maps on this phone, which can start Waze for them. Waze must be signed in.",
+      "description": "Shows Waze alerts in Ungoogled Maps on this phone. Waze must be signed in and open.",
       "default": true,
       "category": null,
       "dependencies": [
@@ -8400,13 +6147,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -8563,13 +6303,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -8620,13 +6353,6 @@
           "signatures": null,
           "targets": [
             {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
               "version": "5.27.0.1",
               "versionCodes": null,
               "isExperimental": false,
@@ -8669,7 +6395,6 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -8682,10 +6407,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -8710,13 +6435,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -8767,13 +6485,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -8828,7 +6539,6 @@
       "dependencies": [
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -8841,10 +6551,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -8869,13 +6579,6 @@
           "appIconColor": "#33CCFF",
           "signatures": null,
           "targets": [
-            {
-              "version": "5.27.5.0",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
             {
               "version": "5.27.0.1",
               "versionCodes": null,
@@ -8940,6 +6643,8 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
             }
           ]
         }
@@ -8967,6 +6672,7 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+<<<<<<< HEAD
             },
             {
               "version": "5.9.40.48",
@@ -9122,10 +6828,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -9170,7 +6876,6 @@
         "BytecodePatch",
         "BytecodePatch",
         "BytecodePatch",
-        "BytecodePatch",
         "BytecodePatch"
       ],
       "compatiblePackages": [
@@ -9183,10 +6888,10 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
             }
           ]
@@ -9214,11 +6919,13 @@
           "signatures": null,
           "targets": [
             {
-              "version": "26.44.06.1006895251",
+              "version": "26.36.04.973607363",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": 29,
+              "minSdk": null,
               "description": null
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
             }
           ]
         }

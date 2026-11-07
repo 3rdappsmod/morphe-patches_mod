@@ -13,16 +13,14 @@ only those ROMs have and die with NoClassDefFoundError at launch, most often on 
 - ColorOS's additions inside `android.*` (`OplusBaseConfiguration`, `OplusWindowManager`, `OplusActivityManager`,
   `OplusSystemProperties`, `android.os.olc.OlcManager`, ...), and HeyTap SDK pieces an app references without bundling.
 
-Unlike MagicOS (Honor) and LG's ROM, **ColorOS apps name no framework resources**: OPPO's UI library (COUI) is bundled
+**ColorOS apps name no framework resources**: OPPO's UI library (COUI) is bundled
 in every app with its resources, so there is nothing to rewrite in layouts or styles, and COUI's day/night themes work
 off ColorOS. They also add **no members to Android's classes** (Missing.java's members.txt lists only `sun.misc` and
 newer-Android reflection calls). A port is therefore mostly stand-ins.
 
-The generator is the Xiaomi one (`../xiaomi-standins/gen.py`, same `Missing.java`), run with this directory's
+The generator is the shared one (`../standins/gen.py`, same `Missing.java`), run with this directory's
 `known.py` (ColorOS's answers) and `runtime/` (`ColorOS`). The stand-ins carry OPPO's names and signatures only, no OPPO
-code; on an OPPO / OnePlus / realme phone the framework's own classes load first, so they never run there. Samsung,
-Xiaomi, Honor, LG and RedMagic output is unchanged (the shared generator only gained opt-in `FACTORIES` and skips
-members named like Java keywords, which no other vendor's apps have).
+code; on an OPPO / OnePlus / realme phone the framework's own classes load first, so they never run there.
 
 `known.py` beyond the defaults:
 
@@ -46,8 +44,8 @@ members named like Java keywords, which no other vendor's apps have).
 ## Use
 
 ```bash
-X=.github/scripts/xiaomi-standins; C=.github/scripts/coloros-standins
-# 1. what the app uses that the phone lacks (boot classpath pulled once per emulator image, see ../xiaomi-standins)
+X=.github/scripts/standins; C=.github/scripts/coloros-standins
+# 1. what the app uses that the phone lacks (boot classpath pulled once per emulator image, see ../standins)
 java -Xmx4g -cp "$CP" $X/Missing.java boot <app.apk> work/
 # 2. stand-ins + runtime (ColorOS) into the extension
 python3 $C/gen.py work/ extensions/coloros<app>/src/main/java "OnePlus <App>" --apk <app.apk> --runtime org.ungoogled.coloros<app>

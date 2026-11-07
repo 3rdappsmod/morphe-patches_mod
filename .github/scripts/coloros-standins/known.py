@@ -1,7 +1,7 @@
 # Shared answers for ColorOS (OPPO / OnePlus OxygenOS / realme UI): the framework classes its apps call (com.oplus.*,
 # the com.oplus.wrapper.* wrappers of Android's hidden API, older com.color.* / com.oppo.* names, ColorOS's additions
-# inside android.*, HeyTap pieces an app references without bundling), read by ../xiaomi-standins/gen.py through gen.py
-# next to this file. Keys are dex-style like the Xiaomi file: "Lowner;->name:type" (field initializer, a Java
+# inside android.*, HeyTap pieces an app references without bundling), read by ../standins/gen.py through gen.py
+# next to this file. Keys are dex-style: "Lowner;->name:type" (field initializer, a Java
 # expression) or "Lowner;->name(params)return" (method body, Java statements; parameters are p0, p1, ...; RUNTIME is the
 # app's runtime package, see runtime/). Off ColorOS the apps should behave as on a phone without OPPO's framework: no
 # ColorOS version (OplusBuild 0), no ColorOS feature on, the phone's own system properties, Android's own answers where
@@ -28,7 +28,7 @@ INFLATED_ONLY = r'^L(com/oplus/|com/coloros/|com/color/|com/oppo/|oplus/|oppo/|a
 # OPPO's managers hand out their instance through more names than gen.py's default factories.
 FACTORIES = r'^(getDefault|get|getOplusPackageManager|getOppoPackageManager|getService)$'
 
-# Fields ColorOS's libraries only read by reflection (none found yet), as in ../xiaomi-standins/known.py.
+# Fields ColorOS's libraries only read by reflection (none found yet), as in ../standins/known.py.
 REFLECTED = {}
 
 SUPERS = {
