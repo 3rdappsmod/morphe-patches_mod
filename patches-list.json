@@ -193,6 +193,64 @@
     },
     {
       "name": "Enable non-ColorOS ROM support",
+      "description": "Makes ColorOS Documents installable and usable on non-ColorOS ROMs.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "andes.oplus.documentsreader",
+          "name": "OnePlus Documents",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#FF7A00",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.1.32",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable non-ColorOS ROM support",
+      "description": "Makes OnePlus IR Remote installable and usable on non-ColorOS ROMs.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.oplus.consumerIRApp",
+          "name": "OnePlus IR Remote",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#E8452C",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.0.30",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable non-ColorOS ROM support",
       "description": "Makes OnePlus Notes installable and usable on non-ColorOS ROMs.",
       "default": true,
       "category": null,
@@ -239,6 +297,35 @@
           "targets": [
             {
               "version": "17.7.16",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Enable non-ColorOS ROM support",
+      "description": "Makes ColorOS OSee installable and usable on non-ColorOS ROMs.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.coloros.ocrscanner",
+          "name": "OnePlus OSee",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#1E88E5",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "17.2.22",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,

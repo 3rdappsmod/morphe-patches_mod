@@ -14,7 +14,7 @@ HEADER = ('Generated stand-in (.github/scripts/coloros-standins): names and sign
 # OPPO's framework and SDK packages, and ColorOS's additions inside android.* (class names with an Oplus/Oppo/Color
 # prefix, android.common.*, OPPO's olc/secrecy services). Only classes neither the app nor the phone has are written.
 ONLY = (r'^L(com/oplus/|com/coloros/|com/color/|com/oppo/|com/heytap/|com/nearme/|com/oneplus/|net/oneplus/|oplus/'
-        r'|oppo/|coloros/|android/.*/I?(Oplus|Oppo|Color)|android/common/|android/os/olc/|android/secrecy/'
+        r'|oppo/|coloros/|android/.*/I?O(plus|ppo)[A-Z]|android/common/|android/os/olc/|android/secrecy/'
         r'|android/app/job/IJobInfoExt|com/android/id/impl/|com/sdid/id/)')
 
 RUNTIME_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'runtime')
@@ -23,7 +23,7 @@ RUNTIME_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'runtime'
 # Bezier interpolator below is Android's PathInterpolator. COUI (OPPO's UI library) is bundled in each app, so layouts
 # name no framework widgets; any that do are found with --apk.
 SDK_BASES = True
-INFLATED_ONLY = r'^L(com/oplus/|com/coloros/|com/color/|com/oppo/|oplus/|oppo/|android/.*/(Oplus|Oppo|Color))'
+INFLATED_ONLY = r'^L(com/oplus/|com/coloros/|com/color/|com/oppo/|oplus/|oppo/|android/.*/I?(Oplus|Oppo)[A-Z])'
 
 # OPPO's managers hand out their instance through more names than gen.py's default factories.
 FACTORIES = r'^(getDefault|get|getOplusPackageManager|getOppoPackageManager|getService)$'
@@ -113,6 +113,11 @@ METHODS = {
     'Lcom/oplus/os/OplusBuild;->getOplusOSVERSION()I': 'return 0;',
     'Lcom/oplus/os/OplusBuild;->getDeviceName()Ljava/lang/String;': 'return android.os.Build.MODEL;',
     'Lcom/oplus/os/OplusBuild;->getDeviceName(Landroid/content/Context;)Ljava/lang/String;': 'return android.os.Build.MODEL;',
+    # The IR Remote app asks the framework whether the phone has an IR blaster; a stubbed feature manager would say
+    # no, and the app then hides every remote. The patch answers this one feature as present instead, through
+    # a runtime call so the app's own check stays the only place that decides.
+    'Lcom/oplus/content/OplusFeatureConfigManager;->hasFeature(Ljava/lang/String;)Z':
+        'return "oplus.hardware.type.rear_IR".equals(p0);',
     'Lcom/color/os/ColorBuild;->getColorOSVERSION()I': 'return 0;',
     'Lcom/color/os/ColorBuild;->getDeviceName()Ljava/lang/String;': 'return android.os.Build.MODEL;',
     'Lcom/color/os/ColorBuild;->getDeviceName(Landroid/content/Context;)Ljava/lang/String;': 'return android.os.Build.MODEL;',

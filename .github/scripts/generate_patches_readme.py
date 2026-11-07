@@ -50,7 +50,9 @@ VENDOR_GROUPS = [
     ("Samsung Apps", "samsung ", ("com.samsung.", "com.sec."), ()),
     # OPPO's ColorOS, also OnePlus's OxygenOS and realme UI: apps carry the OnePlus or OPPO name.
     ("ColorOS Apps", ("oneplus ", "oppo ", "coloros ", "realme "),
-     ("com.oneplus.", "net.oneplus.", "com.coloros.", "com.oplus.", "com.oppo."), ()),
+     ("com.oneplus.", "net.oneplus.", "com.coloros.", "com.oplus.", "com.oppo."),
+     # Documents ships under HeyTap's own package name, not OPPO's.
+     ("andes.oplus.documentsreader",)),
 ]
 
 
@@ -89,6 +91,18 @@ APP_RENAMES = {
     "com.sonyericsson.music": (
         '<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music',
         '<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music',
+    ),
+    "com.oplus.consumerIRApp": (
+        '<img src="docs/icons/coloros-ir.png" width="20" height="20" align="top"> OnePlus IR Remote',
+        '<img src="docs/icons/coloros-ir.png" width="20" height="20" align="top"> OnePlus IR Remote',
+    ),
+    "com.coloros.ocrscanner": (
+        '<img src="docs/icons/coloros-scanner.png" width="20" height="20" align="top"> OnePlus OSee',
+        '<img src="docs/icons/coloros-scanner.png" width="20" height="20" align="top"> OnePlus OSee',
+    ),
+    "andes.oplus.documentsreader": (
+        '<img src="docs/icons/coloros-documents.png" width="20" height="20" align="top"> OnePlus Documents',
+        '<img src="docs/icons/coloros-documents.png" width="20" height="20" align="top"> OnePlus Documents',
     ),
     "com.oneplus.soundrecorder": (
         '<img src="docs/icons/coloros-recorder.png" width="20" height="20" align="top"> OnePlus Recorder',
