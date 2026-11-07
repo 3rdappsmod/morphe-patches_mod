@@ -12,7 +12,7 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 ## Patches
 
 <!-- PATCHES_START -->
-> **[v1.1.0](https://github.com/3rdappsmod/morphe-patches_mod/releases/tag/v1.1.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;16 patches total
+> **[v1.1.0](https://github.com/3rdappsmod/morphe-patches_mod/releases/tag/v1.1.0)**&nbsp;&nbsp;•&nbsp;&nbsp;`main`&nbsp;&nbsp;•&nbsp;&nbsp;17 patches total
 <details>
 <summary>📱 Sony Apps&nbsp;&nbsp;•&nbsp;&nbsp;1 app&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
@@ -59,6 +59,26 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 | Patch | Description | Options |
 |----------|----------------|-----------|
 | [Enable non-ASUS ROM support](#enable-non-asus-rom-support) | Makes ASUS Gallery installable and usable on phones from other makers. |  |
+
+</details>
+
+</blockquote>
+</details>
+
+<details>
+<summary>📱 Xiaomi Apps&nbsp;&nbsp;•&nbsp;&nbsp;1 app&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+<blockquote>
+
+<details>
+<summary><img src="docs/icons/xiaomi-remote.png" width="20" height="20" align="top"> Mi Remote&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/xiaomi-remote.png" width="20" height="20" align="top"> Mi Remote&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
+<br>
+
+**Supported version(s):** 7.2.5R
+
+| Patch | Description | Options |
+|----------|----------------|-----------|
+| [Enable non-HyperOS ROM support](#enable-non-hyperos-rom-support) | Makes Mi Remote installable and usable on non-Xiaomi ROMs. |  |
 
 </details>
 
