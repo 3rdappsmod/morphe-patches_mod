@@ -3,7 +3,7 @@ group = "org.ungoogled"
 patches {
     about {
         name = "Danpoong patches"
-        description = "Samsung Keyboard and Samsung Music on non-One UI ROMs, OnePlus Notes and OnePlus Recorder on non-ColorOS ROMs, and Sony Music and ASUS Gallery / File Manager on phones from other makers."
+        description = "Samsung Music on non-One UI ROMs, OnePlus Notes and OnePlus Documents on non-ColorOS ROMs, Sony Music on non-Xperia ROMs, ASUS Gallery and File Manager on non-ASUS ROMs, and Mi Remote on non-HyperOS ROMs."
         source = "https://github.com/3rdappsmod/morphe-patches_mod.git"
         author = "3rdappsmod"
         contact = "https://github.com/3rdappsmod"
