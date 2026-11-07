@@ -66,6 +66,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "ResourcePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -79,35 +80,6 @@
           "targets": [
             {
               "version": "17.1.32",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Enable non-ColorOS ROM support",
-      "description": "Makes OnePlus Notes installable and usable on non-ColorOS ROMs.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.oneplus.note",
-          "name": "OnePlus Notes",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#F9B80B",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "17.0.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
