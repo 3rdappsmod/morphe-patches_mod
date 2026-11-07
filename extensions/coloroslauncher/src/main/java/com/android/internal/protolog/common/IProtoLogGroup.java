@@ -1,7 +1,0 @@
-package com.android.internal.protolog.common;
-
-/** Generated stand-in (.github/scripts/coloros-launcher): names and signatures OnePlus System Launcher uses, answering "absent" off ColorOS and on Android versions without them (no OPPO or Google code). */
-public interface IProtoLogGroup {
-    java.lang.String getTag();
-    boolean isLogToLogcat();
-}

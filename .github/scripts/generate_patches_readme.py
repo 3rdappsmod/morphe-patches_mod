@@ -44,32 +44,17 @@ def pkg_emoji(pkg):
 # Phone makers' own apps, each maker's listed together under one spoiler: (title, name prefix dropped when sorting,
 # package prefixes, packages without the maker's prefix).
 VENDOR_GROUPS = [
-    # Home screen apps from every vendor get one dropdown of their own, listed first,
-    # instead of sitting in their vendor's.
-    ("Launchers", "", (), ("com.sec.android.app.launcher", "com.hihonor.android.launcher", "com.android.launcher",
-                           "com.nothing.launcher", "net.oneplus.launcher", "com.sonymobile.launcher", "com.asus.launcher", "com.motorola.launcher3", "com.miui.home")),
     ("Samsung Apps", "samsung ", ("com.samsung.", "com.sec."), ()),
-    ("Xiaomi Apps", "xiaomi ", ("com.miui.", "com.xiaomi."), ("com.android.soundrecorder", "com.android.calendar")),
-    ("Nothing Apps", "nothing ", ("com.nothing.",), ()),
-    ("Honor Apps", "honor ", ("com.hihonor.",), ()),
-    ("RedMagic Apps", "redmagic ", ("cn.nubia.",), ()),
-    ("LG Apps", "lg ", ("com.lge.",), ("com.android.gallery3d",)),
     # OPPO's ColorOS, also OnePlus's OxygenOS and realme UI: apps carry the OnePlus or OPPO name.
     ("ColorOS Apps", ("oneplus ", "oppo ", "coloros ", "realme "),
-     ("com.oneplus.", "net.oneplus.", "com.coloros.", "com.oplus.", "com.oppo.", "andes.oplus."), ("com.android.contacts",)),
-    # Sony's apps: Xperia's own (com.sonymobile.*) and the older Sony Ericsson names Album still carries.
-    ("Sony Apps", "sony ", ("com.sonymobile.", "com.sony.", "com.sonyericsson."), ()),
+     ("com.oneplus.", "net.oneplus.", "com.coloros.", "com.oplus.", "com.oppo."), ()),
 ]
 
 
 def vendor_group(pkg):
-    """The vendor group an app is listed under, or None for a top-level app. A package named outright in a group
-    (the launchers) wins over a vendor's package prefix."""
+    """The vendor group an app is listed under, or None for a top-level app."""
     for group in VENDOR_GROUPS:
-        if pkg in group[3]:
-            return group
-    for group in VENDOR_GROUPS:
-        if group[2] and pkg.startswith(group[2]):
+        if pkg.startswith(group[2]) or pkg in group[3]:
             return group
     return None
 
@@ -78,361 +63,23 @@ def vendor_group(pkg):
 # spoiler summary instead of the generic 📦 label. The patched name comes from a
 # patch option, not from patches-list.json, so it is declared here.
 APP_RENAMES = {
-    "com.google.android.apps.maps": (
-        '<img src="docs/icons/pin-google.png" width="20" height="20" align="top"> Google Maps',
-        '<img src="docs/icons/pin-ungoogled.png" width="20" height="20" align="top"> Ungoogled Maps',
-    ),
-    "com.google.android.gm": (
-        '<img src="docs/icons/gmail.png" width="20" height="20" align="top"> Gmail',
-        '<img src="docs/icons/gmail.png" width="20" height="20" align="top"> Gmail',
-    ),
-    "com.waze": (
-        '<img src="docs/icons/waze.png" width="20" height="20" align="top"> Waze',
-        '<img src="docs/icons/waze.png" width="20" height="20" align="top"> De-Waze',
-    ),
-    "com.alltrails.alltrails": (
-        '<img src="docs/icons/alltrails.png" width="20" height="20" align="top"> AllTrails',
-        '<img src="docs/icons/alltrails-black.png" width="20" height="20" align="top"> AllTrails',
-    ),
-    "io.github.artcraftandroid.pdfcraft": (
-        '<img src="docs/icons/pdfcraft.png" width="20" height="20" align="top"> PdfCraft',
-        '<img src="docs/icons/pdfcraft.png" width="20" height="20" align="top"> PdfCraft',
-    ),
     "com.samsung.android.honeyboard": (
         '<img src="docs/icons/samsung-keyboard.png" width="20" height="20" align="top"> Samsung Keyboard',
         '<img src="docs/icons/samsung-keyboard.png" width="20" height="20" align="top"> Samsung Keyboard',
-    ),
-    "com.sec.android.gallery3d": (
-        '<img src="docs/icons/samsung-gallery.png" width="20" height="20" align="top"> Samsung Gallery',
-        '<img src="docs/icons/samsung-gallery.png" width="20" height="20" align="top"> Samsung Gallery',
-    ),
-    "com.samsung.android.app.notes": (
-        '<img src="docs/icons/samsung-notes.png" width="20" height="20" align="top"> Samsung Notes',
-        '<img src="docs/icons/samsung-notes.png" width="20" height="20" align="top"> Samsung Notes',
-    ),
-    "com.samsung.android.soundassistant": (
-        '<img src="docs/icons/samsung-sound-assistant.png" width="20" height="20" align="top"> Sound Assistant',
-        '<img src="docs/icons/samsung-sound-assistant.png" width="20" height="20" align="top"> Sound Assistant',
-    ),
-    "com.sec.android.app.myfiles": (
-        '<img src="docs/icons/samsung-my-files.png" width="20" height="20" align="top"> Samsung My Files',
-        '<img src="docs/icons/samsung-my-files.png" width="20" height="20" align="top"> Samsung My Files',
     ),
     "com.sec.android.app.music": (
         '<img src="docs/icons/samsung-music.png" width="20" height="20" align="top"> Samsung Music',
         '<img src="docs/icons/samsung-music.png" width="20" height="20" align="top"> Samsung Music',
     ),
-    "com.samsung.android.shealthmonitor": (
-        '<img src="docs/icons/samsung-health-monitor.png" width="20" height="20" align="top"> Samsung Health Monitor',
-        '<img src="docs/icons/samsung-health-monitor.png" width="20" height="20" align="top"> Samsung Health Monitor',
-    ),
-    "com.sec.android.app.shealth": (
-        '<img src="docs/icons/samsung-health.png" width="20" height="20" align="top"> Samsung Health',
-        '<img src="docs/icons/samsung-health.png" width="20" height="20" align="top"> Samsung Health',
-    ),
-    "com.samsung.android.video": (
-        '<img src="docs/icons/samsung-video-player.png" width="20" height="20" align="top"> Samsung Video Player',
-        '<img src="docs/icons/samsung-video-player.png" width="20" height="20" align="top"> Samsung Video Player',
-    ),
-    "com.sec.android.mimage.photoretouching": (
-        '<img src="docs/icons/samsung-photo-editor.png" width="20" height="20" align="top"> Samsung Photo Editor',
-        '<img src="docs/icons/samsung-photo-editor.png" width="20" height="20" align="top"> Samsung Photo Editor',
-    ),
-    "com.samsung.android.calendar": (
-        '<img src="docs/icons/samsung-calendar.png" width="20" height="20" align="top"> Samsung Calendar',
-        '<img src="docs/icons/samsung-calendar.png" width="20" height="20" align="top"> Samsung Calendar',
-    ),
-    "com.samsung.android.app.reminder": (
-        '<img src="docs/icons/samsung-reminder.png" width="20" height="20" align="top"> Samsung Reminder',
-        '<img src="docs/icons/samsung-reminder.png" width="20" height="20" align="top"> Samsung Reminder',
-    ),
-    "com.sec.android.daemonapp": (
-        '<img src="docs/icons/samsung-weather.png" width="20" height="20" align="top"> Samsung Weather',
-        '<img src="docs/icons/samsung-weather.png" width="20" height="20" align="top"> Samsung Weather',
-    ),
-    "com.samsung.android.app.routines": (
-        '<img src="docs/icons/samsung-modes-and-routines.png" width="20" height="20" align="top"> Samsung Modes and Routines',
-        '<img src="docs/icons/samsung-modes-and-routines.png" width="20" height="20" align="top"> Samsung Modes and Routines',
-    ),
-    "com.samsung.android.messaging": (
-        '<img src="docs/icons/samsung-messages.png" width="20" height="20" align="top"> Samsung Messages',
-        '<img src="docs/icons/samsung-messages.png" width="20" height="20" align="top"> Samsung Messages',
-    ),
-    "com.samsung.android.app.contacts": (
-        '<img src="docs/icons/samsung-contacts.png" width="20" height="20" align="top"> Samsung Contacts',
-        '<img src="docs/icons/samsung-contacts.png" width="20" height="20" align="top"> Samsung Contacts',
-    ),
-    "com.samsung.android.dialer": (
-        '<img src="docs/icons/samsung-phone.png" width="20" height="20" align="top"> Samsung Phone',
-        '<img src="docs/icons/samsung-phone.png" width="20" height="20" align="top"> Samsung Phone',
-    ),
-    "com.sec.android.app.clockpackage": (
-        '<img src="docs/icons/samsung-clock.png" width="20" height="20" align="top"> Samsung Clock',
-        '<img src="docs/icons/samsung-clock.png" width="20" height="20" align="top"> Samsung Clock',
-    ),
-    "com.sec.android.app.popupcalculator": (
-        '<img src="docs/icons/samsung-calculator.png" width="20" height="20" align="top"> Samsung Calculator',
-        '<img src="docs/icons/samsung-calculator.png" width="20" height="20" align="top"> Samsung Calculator',
-    ),
-    "com.sec.android.app.voicenote": (
-        '<img src="docs/icons/samsung-voice-recorder.png" width="20" height="20" align="top"> Samsung Voice Recorder',
-        '<img src="docs/icons/samsung-voice-recorder.png" width="20" height="20" align="top"> Samsung Voice Recorder',
-    ),
-    "com.sec.app.screenrecorder": (
-        '<img src="docs/icons/samsung-screen-recorder.png" width="20" height="20" align="top"> Samsung Screen Recorder',
-        '<img src="docs/icons/samsung-screen-recorder.png" width="20" height="20" align="top"> Samsung Screen Recorder',
-    ),
-    "com.samsung.android.app.smartcapture": (
-        '<img src="docs/icons/samsung-capture.png" width="20" height="20" align="top"> Samsung Capture',
-        '<img src="docs/icons/samsung-capture.png" width="20" height="20" align="top"> Samsung Capture',
-    ),
-    "com.sec.android.app.sbrowser": (
-        '<img src="docs/icons/samsung-internet.png" width="20" height="20" align="top"> Samsung Internet',
-        '<img src="docs/icons/samsung-internet.png" width="20" height="20" align="top"> Samsung Internet',
-    ),
-    "com.samsung.android.email.provider": (
-        '<img src="docs/icons/samsung-email.png" width="20" height="20" align="top"> Samsung Email',
-        '<img src="docs/icons/samsung-email.png" width="20" height="20" align="top"> Samsung Email',
-    ),
-    "com.sec.android.app.launcher": (
-        '<img src="docs/icons/samsung-one-ui-home.png" width="20" height="20" align="top"> One UI Home',
-        '<img src="docs/icons/samsung-one-ui-home.png" width="20" height="20" align="top"> One UI Home',
-    ),
-    "com.samsung.android.goodlock": (
-        '<img src="docs/icons/samsung-good-lock.png" width="20" height="20" align="top"> Good Lock',
-        '<img src="docs/icons/samsung-good-lock.png" width="20" height="20" align="top"> Good Lock',
-    ),
-    "com.samsung.android.app.homestar": (
-        '<img src="docs/icons/samsung-home-up.png" width="20" height="20" align="top"> Home Up',
-        '<img src="docs/icons/samsung-home-up.png" width="20" height="20" align="top"> Home Up',
-    ),
-    "com.samsung.android.wonderland.wallpaper": (
-        '<img src="docs/icons/samsung-wonderland.png" width="20" height="20" align="top"> Wonderland',
-        '<img src="docs/icons/samsung-wonderland.png" width="20" height="20" align="top"> Wonderland',
-    ),
-    "com.samsung.android.sidegesturepad": (
-        '<img src="docs/icons/samsung-one-hand-operation.png" width="20" height="20" align="top"> One Hand Operation +',
-        '<img src="docs/icons/samsung-one-hand-operation.png" width="20" height="20" align="top"> One Hand Operation +',
-    ),
-    "com.miui.compass": (
-        '<img src="docs/icons/xiaomi-compass.png" width="20" height="20" align="top"> Xiaomi Compass',
-        '<img src="docs/icons/xiaomi-compass.png" width="20" height="20" align="top"> Xiaomi Compass',
-    ),
-    "com.miui.gallery": (
-        '<img src="docs/icons/xiaomi-gallery.png" width="20" height="20" align="top"> Xiaomi Gallery',
-        '<img src="docs/icons/xiaomi-gallery.png" width="20" height="20" align="top"> Xiaomi Gallery',
-    ),
-    "com.miui.mediaeditor": (
-        '<img src="docs/icons/xiaomi-gallery-editor.png" width="20" height="20" align="top"> Xiaomi Gallery Editor',
-        '<img src="docs/icons/xiaomi-gallery-editor.png" width="20" height="20" align="top"> Xiaomi Gallery Editor',
-    ),
-    "com.android.soundrecorder": (
-        '<img src="docs/icons/xiaomi-recorder.png" width="20" height="20" align="top"> Xiaomi Recorder',
-        '<img src="docs/icons/xiaomi-recorder.png" width="20" height="20" align="top"> Xiaomi Recorder',
-    ),
-    "com.miui.notes": (
-        '<img src="docs/icons/xiaomi-notes.png" width="20" height="20" align="top"> Xiaomi Notes',
-        '<img src="docs/icons/xiaomi-notes.png" width="20" height="20" align="top"> Xiaomi Notes',
-    ),
-    "com.xiaomi.scanner": (
-        '<img src="docs/icons/xiaomi-scanner.png" width="20" height="20" align="top"> Xiaomi Scanner',
-        '<img src="docs/icons/xiaomi-scanner.png" width="20" height="20" align="top"> Xiaomi Scanner',
-    ),
-    "com.miui.weather2": (
-        '<img src="docs/icons/xiaomi-weather.png" width="20" height="20" align="top"> Xiaomi Weather',
-        '<img src="docs/icons/xiaomi-weather.png" width="20" height="20" align="top"> Xiaomi Weather',
-    ),
-    "com.miui.screenrecorder": (
-        '<img src="docs/icons/xiaomi-screen-recorder.png" width="20" height="20" align="top"> Xiaomi Screen Recorder',
-        '<img src="docs/icons/xiaomi-screen-recorder.png" width="20" height="20" align="top"> Xiaomi Screen Recorder',
-    ),
-    "com.android.calendar": (
-        '<img src="docs/icons/xiaomi-calendar.png" width="20" height="20" align="top"> Xiaomi Calendar',
-        '<img src="docs/icons/xiaomi-calendar.png" width="20" height="20" align="top"> Xiaomi Calendar',
-    ),
-    "com.nothing.gallery": (
-        '<img src="docs/icons/nothing-gallery.png" width="20" height="20" align="top"> Nothing Gallery',
-        '<img src="docs/icons/nothing-gallery.png" width="20" height="20" align="top"> Nothing Gallery',
-    ),
-    "com.nothing.soundrecorder": (
-        '<img src="docs/icons/nothing-recorder.png" width="20" height="20" align="top"> Nothing Recorder',
-        '<img src="docs/icons/nothing-recorder.png" width="20" height="20" align="top"> Nothing Recorder',
-    ),
-    "com.nothing.ntscreenshot": (
-        '<img src="docs/icons/nothing-screenshot.png" width="20" height="20" align="top"> Nothing Screenshot',
-        '<img src="docs/icons/nothing-screenshot.png" width="20" height="20" align="top"> Nothing Screenshot',
-    ),
-    "com.nothing.launcher": (
-        '<img src="docs/icons/nothing-launcher.png" width="20" height="20" align="top"> Nothing Launcher',
-        '<img src="docs/icons/nothing-launcher.png" width="20" height="20" align="top"> Nothing Launcher',
-    ),
-    "com.hihonor.calculator": (
-        '<img src="docs/icons/honor-calculator.png" width="20" height="20" align="top"> Honor Calculator',
-        '<img src="docs/icons/honor-calculator.png" width="20" height="20" align="top"> Honor Calculator',
-    ),
-    "com.hihonor.hnvideoplayer": (
-        '<img src="docs/icons/honor-video-player.png" width="20" height="20" align="top"> Honor Video Player',
-        '<img src="docs/icons/honor-video-player.png" width="20" height="20" align="top"> Honor Video Player',
-    ),
-    "com.hihonor.compass": (
-        '<img src="docs/icons/honor-compass.png" width="20" height="20" align="top"> Honor Compass',
-        '<img src="docs/icons/honor-compass.png" width="20" height="20" align="top"> Honor Compass',
-    ),
-    "com.hihonor.deskclock": (
-        '<img src="docs/icons/honor-clock.png" width="20" height="20" align="top"> Honor Clock',
-        '<img src="docs/icons/honor-clock.png" width="20" height="20" align="top"> Honor Clock',
-    ),
-    "com.hihonor.soundrecorder": (
-        '<img src="docs/icons/honor-recorder.png" width="20" height="20" align="top"> Honor Recorder',
-        '<img src="docs/icons/honor-recorder.png" width="20" height="20" align="top"> Honor Recorder',
-    ),
-    "com.hihonor.calendar": (
-        '<img src="docs/icons/honor-calendar.png" width="20" height="20" align="top"> Honor Calendar',
-        '<img src="docs/icons/honor-calendar.png" width="20" height="20" align="top"> Honor Calendar',
-    ),
-    "com.hihonor.filemanager": (
-        '<img src="docs/icons/honor-files.png" width="20" height="20" align="top"> Honor Files',
-        '<img src="docs/icons/honor-files.png" width="20" height="20" align="top"> Honor Files',
-    ),
-    "com.hihonor.notepad": (
-        '<img src="docs/icons/honor-notes.png" width="20" height="20" align="top"> Honor Notes',
-        '<img src="docs/icons/honor-notes.png" width="20" height="20" align="top"> Honor Notes',
-    ),
-    "com.hihonor.android.totemweather": (
-        '<img src="docs/icons/honor-weather.png" width="20" height="20" align="top"> Honor Weather',
-        '<img src="docs/icons/honor-weather.png" width="20" height="20" align="top"> Honor Weather',
-    ),
-    "com.hihonor.screenrecorder": (
-        '<img src="docs/icons/honor-screen-recorder.png" width="20" height="20" align="top"> Honor Screen recording',
-        '<img src="docs/icons/honor-screen-recorder.png" width="20" height="20" align="top"> Honor Screen recording',
-    ),
-    "com.hihonor.android.launcher": (
-        '<img src="docs/icons/honor-home.png" width="20" height="20" align="top"> Honor Home',
-        '<img src="docs/icons/honor-home.png" width="20" height="20" align="top"> Honor Home',
-    ),
-    "cn.nubia.gamelauncher": (
-        '<img src="docs/icons/redmagic-game-space.png" width="20" height="20" align="top"> RedMagic Game Space',
-        '<img src="docs/icons/redmagic-game-space.png" width="20" height="20" align="top"> RedMagic Game Space',
-    ),
-    "com.lge.qmemoplus": (
-        '<img src="docs/icons/lg-quickmemo.png" width="20" height="20" align="top"> LG QuickMemo+',
-        '<img src="docs/icons/lg-quickmemo.png" width="20" height="20" align="top"> LG QuickMemo+',
-    ),
-    "com.lge.lifetracker": (
-        '<img src="docs/icons/lg-health.png" width="20" height="20" align="top"> LG Health',
-        '<img src="docs/icons/lg-health.png" width="20" height="20" align="top"> LG Health',
-    ),
-    "com.android.gallery3d": (
-        '<img src="docs/icons/lg-gallery.png" width="20" height="20" align="top"> LG Gallery',
-        '<img src="docs/icons/lg-gallery.png" width="20" height="20" align="top"> LG Gallery',
-    ),
-    "com.oneplus.calculator": (
-        '<img src="docs/icons/coloros-calculator.png" width="20" height="20" align="top"> OnePlus Calculator',
-        '<img src="docs/icons/coloros-calculator.png" width="20" height="20" align="top"> OnePlus Calculator',
-    ),
-    # OnePlus Weather (ColorOS port, coloros-ports-d)
-    "net.oneplus.weather": (
-        '<img src="docs/icons/coloros-weather.png" width="20" height="20" align="top"> OnePlus Weather',
-        '<img src="docs/icons/coloros-weather.png" width="20" height="20" align="top"> OnePlus Weather',
-    ),
-    # OnePlus Photos (ColorOS port, coloros-ports-d)
-    "com.oneplus.gallery": (
-        '<img src="docs/icons/coloros-gallery.png" width="20" height="20" align="top"> OnePlus Photos',
-        '<img src="docs/icons/coloros-gallery.png" width="20" height="20" align="top"> OnePlus Photos',
-    ),
-    # OnePlus My Files (coloros-ports-c)
-    "com.oneplus.filemanager": (
-        '<img src="docs/icons/coloros-myfiles.png" width="20" height="20" align="top"> OnePlus My Files',
-        '<img src="docs/icons/coloros-myfiles.png" width="20" height="20" align="top"> OnePlus My Files',
-    ),
-    # OnePlus Notes (coloros-ports-c)
     "com.oneplus.note": (
         '<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes',
         '<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes',
-    ),
-    # OnePlus Screen Recording (coloros-ports-c)
-    "com.oplus.screenrecorder": (
-        '<img src="docs/icons/coloros-screenrecorder.png" width="20" height="20" align="top"> OnePlus Screen Recording',
-        '<img src="docs/icons/coloros-screenrecorder.png" width="20" height="20" align="top"> OnePlus Screen Recording',
-    ),
-    # ColorOS ports (coloros-ports-b): OnePlus Compass, OnePlus Clock, OnePlus Recorder
-    "com.coloros.compass2": (
-        '<img src="docs/icons/coloros-compass.png" width="20" height="20" align="top"> OnePlus Compass',
-        '<img src="docs/icons/coloros-compass.png" width="20" height="20" align="top"> OnePlus Compass',
-    ),
-    "com.oneplus.deskclock": (
-        '<img src="docs/icons/coloros-clock.png" width="20" height="20" align="top"> OnePlus Clock',
-        '<img src="docs/icons/coloros-clock.png" width="20" height="20" align="top"> OnePlus Clock',
     ),
     "com.oneplus.soundrecorder": (
         '<img src="docs/icons/coloros-recorder.png" width="20" height="20" align="top"> OnePlus Recorder',
         '<img src="docs/icons/coloros-recorder.png" width="20" height="20" align="top"> OnePlus Recorder',
     ),
-    # OnePlus Contacts (ColorOS 16 contacts + dial pad, installed as org.ungoogled.opluscontacts)
-    "com.android.contacts": (
-        '<img src="docs/icons/coloros-contacts.png" width="20" height="20" align="top"> OnePlus Contacts',
-        '<img src="docs/icons/coloros-contacts.png" width="20" height="20" align="top"> OnePlus Contacts',
-    ),
-    # OnePlus Documents (ColorOS / OxygenOS documents reader, issue #149)
-    "andes.oplus.documentsreader": (
-        '<img src="docs/icons/coloros-documents.png" width="20" height="20" align="top"> OnePlus Documents',
-        '<img src="docs/icons/coloros-documents.png" width="20" height="20" align="top"> OnePlus Documents',
-    ),
-    # OnePlus Camera (the phone's own system camera, root mount install on OnePlus / OPPO phones)
-    "com.oplus.camera": (
-        '<img src="docs/icons/coloros-camera.png" width="20" height="20" align="top"> OnePlus Camera',
-        '<img src="docs/icons/coloros-camera.png" width="20" height="20" align="top"> OnePlus Camera',
-    ),
-    # OnePlus System Launcher (ColorOS / OxygenOS 16 home screen, coloros-launcher)
-    "com.android.launcher": (
-        '<img src="docs/icons/coloros-launcher.png" width="20" height="20" align="top"> OnePlus System Launcher',
-        '<img src="docs/icons/coloros-launcher.png" width="20" height="20" align="top"> OnePlus System Launcher',
-    ),
-    # The old OxygenOS 11 launcher (2021), not ColorOS's System Launcher.
-    "net.oneplus.launcher": (
-        '<img src="docs/icons/oneplus-launcher.png" width="20" height="20" align="top"> OnePlus Launcher (OxygenOS 11)',
-        '<img src="docs/icons/oneplus-launcher.png" width="20" height="20" align="top"> OnePlus Launcher (OxygenOS 11)',
-    ),
-    # Sony Album (Xperia's gallery, sony-ports)
-    "com.sonyericsson.album": (
-        '<img src="docs/icons/sony-album.png" width="20" height="20" align="top"> Sony Album',
-        '<img src="docs/icons/sony-album.png" width="20" height="20" align="top"> Sony Album',
-    ),
-    # Sony Music (Xperia's music player)
-    "com.sonyericsson.music": (
-        '<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music',
-        '<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music',
-    ),
-    # Xperia Keyboard (Xperia's keyboard)
-    "com.sonyericsson.textinput.uxp": (
-        '<img src="docs/icons/xperia-keyboard.png" width="20" height="20" align="top"> Xperia Keyboard',
-        '<img src="docs/icons/xperia-keyboard.png" width="20" height="20" align="top"> Xperia Keyboard',
-    ),
-    # Xperia Home (Sony's launcher, sony-ports): listed under Launchers.
-    "com.sonymobile.launcher": (
-        '<img src="docs/icons/xperia-home.png" width="20" height="20" align="top"> Xperia Home',
-        '<img src="docs/icons/xperia-home.png" width="20" height="20" align="top"> Xperia Home',
-    ),
-    # ASUS Launcher (ZenUI's home screen): listed under Launchers.
-    "com.asus.launcher": (
-        '<img src="docs/icons/asus-launcher.png" width="20" height="20" align="top"> ASUS Launcher',
-        '<img src="docs/icons/asus-launcher.png" width="20" height="20" align="top"> ASUS Launcher',
-    ),
-    # Moto App Launcher (Motorola's home screen): listed under Launchers.
-    "com.motorola.launcher3": (
-        '<img src="docs/icons/moto-launcher.png" width="20" height="20" align="top"> Moto App Launcher',
-        '<img src="docs/icons/moto-launcher.png" width="20" height="20" align="top"> Moto App Launcher',
-    ),
-    # HyperOS launcher (Xiaomi's System launcher, com.miui.home): listed under Launchers, not Xiaomi Apps.
-    "com.miui.home": (
-        '<img src="docs/icons/hyperos-launcher.png" width="20" height="20" align="top"> HyperOS Launcher',
-        '<img src="docs/icons/hyperos-launcher.png" width="20" height="20" align="top"> HyperOS Launcher',
-    ),
 }
-
-
-# Shown under the patch list, every time the list is generated.
-FOOTER = "Can't find an APK in Morphe Manager? See [where to get each APK](docs/APK-SOURCES.md)."
 
 
 def pkg_label(pkg, entry):
@@ -625,9 +272,6 @@ def build_content(expanded=False):
 
 </details>""")
         lines.append("")
-
-    lines.append(FOOTER)
-    lines.append("")
 
     return "\n".join(lines)
 

@@ -1,9 +1,0 @@
-package com.oplus.app;
-
-/** Generated stand-in (.github/scripts/coloros-standins): names and signatures OnePlus Contacts uses, answering "absent" off ColorOS (no OPPO code). */
-public interface IOplusAppStartController {
-    public static abstract class Stub extends android.os.Binder implements com.oplus.app.IOplusAppStartController {
-        public Stub() {
-        }
-    }
-}

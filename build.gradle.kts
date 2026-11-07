@@ -1,1 +1,1 @@
-// Root build configuration for bearinmind patches
+// Root build configuration for Danpoong patches

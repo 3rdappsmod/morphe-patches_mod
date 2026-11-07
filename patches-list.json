@@ -1,5 +1,6 @@
 {
   "NOTE": "Do NOT manually edit this file. This file is automatically updated when semantic release (release.yml) runs. Manually editing this file can break your releases and break third party tools that use this file.",
+<<<<<<< HEAD
   "version": "2.9.4",
   "patches": [
     {
@@ -368,6 +369,11 @@
       "options": []
     },
     {
+=======
+  "version": "1.1.0",
+  "patches": [
+    {
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
       "name": "Always incognito",
       "description": "Never learns from what you type.",
       "default": false,
@@ -388,55 +394,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -444,6 +401,7 @@
       "options": []
     },
     {
+<<<<<<< HEAD
       "name": "Always use GIPHY",
       "description": "Shows GIPHY GIFs in every language.",
       "default": true,
@@ -1161,6 +1119,8 @@
       ]
     },
     {
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
       "name": "Change app name",
       "description": "Renames Samsung Keyboard, so the two keyboards can be told apart.",
       "default": true,
@@ -1177,55 +1137,6 @@
           "targets": [
             {
               "version": "5.9.40.75",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -1247,6 +1158,7 @@
       ]
     },
     {
+<<<<<<< HEAD
       "name": "Change app name",
       "description": "Renames Waze.",
       "default": true,
@@ -1422,6 +1334,8 @@
       ]
     },
     {
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
       "name": "Change package name",
       "description": "Installs next to Samsung's own Samsung Capture on Galaxy phones (One UI Core).",
       "default": false,
@@ -1485,55 +1399,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": "5.9.40.48",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.12",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.11",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.40.6",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.97",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.95",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": "5.9.30.90",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -1549,133 +1414,6 @@
           "values": null
         }
       ]
-    },
-    {
-      "name": "Custom icon",
-      "description": "Replaces the launcher icon with a PDF icon or your own image.",
-      "default": false,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "io.github.artcraftandroid.pdfcraft",
-          "name": "PdfCraft",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#B70228",
-          "signatures": null,
-          "targets": [
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "design",
-          "title": "Icon",
-          "description": "Built-in icon to use.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "red",
-          "values": {
-            "Red PDF": "red",
-            "Blue PDF": "blue",
-            "Dark page": "dark"
-          }
-        },
-        {
-          "key": "image",
-          "title": "Your own image",
-          "description": "Path to a square PNG, JPG or WebP. Used instead of the icon above.",
-          "required": false,
-          "type": "kotlin.String",
-          "default": null,
-          "values": null
-        },
-        {
-          "key": "background",
-          "title": "Background",
-          "description": "Colour behind your own image.",
-          "required": true,
-          "type": "kotlin.String",
-          "default": "#FFFFFF",
-          "values": null
-        },
-        {
-          "key": "fill",
-          "title": "Fill the whole icon",
-          "description": "Your own image covers the icon edge to edge instead of sitting inside it.",
-          "required": true,
-          "type": "kotlin.Boolean",
-          "default": false,
-          "values": null
-        }
-      ]
-    },
-    {
-      "name": "Customization screen",
-      "description": "Adds a Customization row under Settings on the account sheet, with switches for the patches here that can be turned back off inside the app.",
-      "default": true,
-      "category": null,
-      "dependencies": [
-        "BytecodePatch",
-        "BytecodePatch",
-        "BytecodePatch",
-        "ResourcePatch"
-      ],
-      "compatiblePackages": [
-        {
-          "packageName": "com.google.android.apps.maps",
-          "name": "Google Maps",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#FFFFFF",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "26.36.04.973607363",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Disable telemetry",
-      "description": "Turns off Samsung Analytics and crash reports.",
-      "default": true,
-      "category": null,
-      "dependencies": [],
-      "compatiblePackages": [
-        {
-          "packageName": "com.sec.android.gallery3d",
-          "name": "Samsung Gallery",
-          "description": null,
-          "apkFileType": "APK",
-          "appIconColor": "#F0466E",
-          "signatures": null,
-          "targets": [
-            {
-              "version": "15.9.01.7",
-              "versionCodes": null,
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
     },
     {
       "name": "Disable telemetry",
@@ -1698,6 +1436,7 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+<<<<<<< HEAD
             },
             {
               "version": "5.9.40.48",
@@ -2058,6 +1797,8 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
             }
           ]
         }
@@ -2082,7 +1823,7 @@
           "signatures": null,
           "targets": [
             {
-              "version": "16.6.14",
+              "version": "17.0.30",
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": null,
@@ -2109,6 +1850,7 @@
           "signatures": null,
           "targets": [
             {
+<<<<<<< HEAD
               "version": "16.17.6",
               "versionCodes": null,
               "isExperimental": false,
@@ -3587,6 +3329,9 @@
           "targets": [
             {
               "version": "16.3.21.1",
+=======
+              "version": "17.7.16",
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
               "versionCodes": null,
               "isExperimental": false,
               "minSdk": 35,
@@ -3631,6 +3376,7 @@
       "options": []
     },
     {
+<<<<<<< HEAD
       "name": "Enable non-One UI ROM support",
       "description": "Makes Samsung My Files installable and usable on non-One UI ROMs.",
       "default": true,
@@ -5342,6 +5088,8 @@
       "options": []
     },
     {
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
       "name": "No GIF tracking",
       "description": "Stops GIPHY and Tenor view and share pings.",
       "default": true,
@@ -5362,6 +5110,7 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+<<<<<<< HEAD
             },
             {
               "version": "5.9.40.48",
@@ -5752,6 +5501,8 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
             }
           ]
         }
@@ -5806,6 +5557,7 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+<<<<<<< HEAD
             },
             {
               "version": "5.9.40.48",
@@ -6891,6 +6643,8 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
             }
           ]
         }
@@ -6918,6 +6672,7 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+<<<<<<< HEAD
             },
             {
               "version": "5.9.40.48",
@@ -7169,6 +6924,8 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
+=======
+>>>>>>> 6c1c0b7 (chore: remove the patches outside the kept apps)
             }
           ]
         }

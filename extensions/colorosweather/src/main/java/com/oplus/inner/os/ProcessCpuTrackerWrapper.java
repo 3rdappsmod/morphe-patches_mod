@@ -1,9 +1,0 @@
-package com.oplus.inner.os;
-
-/** Generated stand-in (.github/scripts/coloros-standins): names and signatures OnePlus Weather uses, answering "absent" off ColorOS (no OPPO code). */
-public class ProcessCpuTrackerWrapper {
-    public ProcessCpuTrackerWrapper(boolean p0) {
-    }
-    public void update() {
-    }
-}
