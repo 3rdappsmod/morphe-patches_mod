@@ -9,6 +9,9 @@ REGION = 'java.util.Locale.getDefault().getCountry()'
 HEX_LOOP = 'StringBuilder h = new StringBuilder(); for (byte x : d) h.append(String.format("%02x", x & 0xff));'
 
 FIELDS = {
+    # Mi Remote asks the framework whether the phone has an IR blaster through Android's own ConsumerIrManager, so
+    # nothing here needs to answer it; the app's other reads (region, haptics) answer "absent" as everywhere else.
+
     # miui.os.Build: Global (international) behaviour; e.g. Compass shows China's CTA consent unless this is true.
     'Lmiui/os/Build;->IS_INTERNATIONAL_BUILD:Z': 'true',
     'Lmiui/os/Build;->IS_GLOBAL_BUILD:Z': 'true',

@@ -1,0 +1,10 @@
+package org.ungoogled.xiaomiremote;
+
+/**
+ * Holds one generated method per HyperOS member Mi Remote uses (see Miui): the patch writes them at patch time,
+ * shaped like the call or field access each replaces.
+ */
+public final class MiuiShims {
+    private MiuiShims() {
+    }
+}

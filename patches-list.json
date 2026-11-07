@@ -337,6 +337,35 @@
       "options": []
     },
     {
+      "name": "Enable non-HyperOS ROM support",
+      "description": "Makes Mi Remote installable and usable on non-Xiaomi ROMs.",
+      "default": true,
+      "category": null,
+      "dependencies": [
+        "ResourcePatch"
+      ],
+      "compatiblePackages": [
+        {
+          "packageName": "com.duokan.phone.remotecontroller",
+          "name": "Mi Remote",
+          "description": null,
+          "apkFileType": "APK",
+          "appIconColor": "#F26B21",
+          "signatures": null,
+          "targets": [
+            {
+              "version": "7.2.5R",
+              "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Enable non-One UI ROM support",
       "description": "Makes Samsung Music installable and usable on non-One UI ROMs.",
       "default": true,

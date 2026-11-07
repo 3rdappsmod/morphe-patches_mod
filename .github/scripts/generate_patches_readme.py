@@ -47,6 +47,8 @@ VENDOR_GROUPS = [
     # Sony's Xperia apps: Music is the only one patched so far.
     ("Sony Apps", "sony ", ("com.sonyericsson.",), ()),
     ("ASUS Apps", "asus ", ("com.asus.",), ()),
+    # Xiaomi's own apps, and Mi Remote, which Dokan builds for Xiaomi under its own package name.
+    ("Xiaomi Apps", "xiaomi ", ("com.miui.", "com.xiaomi."), ("com.duokan.phone.remotecontroller",)),
     ("Samsung Apps", "samsung ", ("com.samsung.", "com.sec."), ()),
     # OPPO's ColorOS, also OnePlus's OxygenOS and realme UI: apps carry the OnePlus or OPPO name.
     ("ColorOS Apps", ("oneplus ", "oppo ", "coloros ", "realme "),
@@ -79,6 +81,10 @@ APP_RENAMES = {
     "com.oneplus.note": (
         '<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes',
         '<img src="docs/icons/coloros-notes.png" width="20" height="20" align="top"> OnePlus Notes',
+    ),
+    "com.duokan.phone.remotecontroller": (
+        '<img src="docs/icons/xiaomi-remote.png" width="20" height="20" align="top"> Mi Remote',
+        '<img src="docs/icons/xiaomi-remote.png" width="20" height="20" align="top"> Mi Remote',
     ),
     "com.asus.gallery": (
         '<img src="docs/icons/asus-gallery.png" width="20" height="20" align="top"> ASUS Gallery',
