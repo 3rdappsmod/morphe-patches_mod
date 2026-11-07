@@ -70,10 +70,6 @@ def vendor_group(pkg):
 # spoiler summary instead of the generic 📦 label. The patched name comes from a
 # patch option, not from patches-list.json, so it is declared here.
 APP_RENAMES = {
-    "com.samsung.android.honeyboard": (
-        '<img src="docs/icons/samsung-keyboard.png" width="20" height="20" align="top"> Samsung Keyboard',
-        '<img src="docs/icons/samsung-keyboard.png" width="20" height="20" align="top"> Samsung Keyboard',
-    ),
     "com.sec.android.app.music": (
         '<img src="docs/icons/samsung-music.png" width="20" height="20" align="top"> Samsung Music',
         '<img src="docs/icons/samsung-music.png" width="20" height="20" align="top"> Samsung Music',
@@ -98,21 +94,9 @@ APP_RENAMES = {
         '<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music',
         '<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music',
     ),
-    "com.oplus.consumerIRApp": (
-        '<img src="docs/icons/coloros-ir.png" width="20" height="20" align="top"> OnePlus IR Remote',
-        '<img src="docs/icons/coloros-ir.png" width="20" height="20" align="top"> OnePlus IR Remote',
-    ),
-    "com.coloros.ocrscanner": (
-        '<img src="docs/icons/coloros-scanner.png" width="20" height="20" align="top"> OnePlus OSee',
-        '<img src="docs/icons/coloros-scanner.png" width="20" height="20" align="top"> OnePlus OSee',
-    ),
     "andes.oplus.documentsreader": (
         '<img src="docs/icons/coloros-documents.png" width="20" height="20" align="top"> OnePlus Documents',
         '<img src="docs/icons/coloros-documents.png" width="20" height="20" align="top"> OnePlus Documents',
-    ),
-    "com.oneplus.soundrecorder": (
-        '<img src="docs/icons/coloros-recorder.png" width="20" height="20" align="top"> OnePlus Recorder',
-        '<img src="docs/icons/coloros-recorder.png" width="20" height="20" align="top"> OnePlus Recorder',
     ),
 }
 
