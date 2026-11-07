@@ -9,7 +9,9 @@ import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
+import app.morphe.patcher.patch.intOption
 import app.morphe.patcher.patch.resourcePatch
+import app.morphe.patcher.patch.stringOption
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import com.android.tools.smali.dexlib2.AccessFlags
@@ -47,76 +49,161 @@ private val manifestPatch = resourcePatch(
 }
 
 /**
- * New documents came out in Chinese faces (宋体 for Word and Excel, an empty east-asian face for PowerPoint) that carry
- * no Hangul glyphs, so Korean text was drawn as boxes and fragments ("ㅋㅋ 6 大 66 ㅋ"). The faces are baked into the
- * document templates the app copies for a new file, so each template's default is rewritten to a face the phone has
- * for its language. Korean phones get the face Android registers for Hangul; other phones keep their own default.
+ * Rewrites a new document's template for the phone's own language.
+ *
+ * The templates ship with Chinese defaults: Word and Excel name 宋体, PowerPoint leaves its east-asian slot empty and
+ * repeats 宋体 in every slide master and layout, and all three tag their runs "zh-CN". On a phone in another language
+ * the app then either draws text in a face it does not have, or shapes it with the wrong east-asian face and gets the
+ * widths wrong (overlapping, cramped letters).
+ *
+ * This has to happen on the phone, not here: the language is the phone's, and the machine that builds the patch is
+ * often in another one. An earlier revision rewrote the templates at build time from `Locale.getDefault()`, so a bundle
+ * built on an English machine tagged every Korean document "en" and shaped Hangul with the Latin face.
+ *
+ * Every template the app copies for a new file goes through `FileHelper.getTempFilePath`, which extracts it from the
+ * assets to a temp file and returns that path. The extension's `Templates.localize` rewrites the extracted file for
+ * `Locale.getDefault()` before the editor reads it, so one APK serves every language, and the patch itself stays out of
+ * the templates. PDF and TXT templates are not Office packages and are left alone.
  */
 private val documentTemplatesPatch = resourcePatch(
-    description = "Gives new documents a default font that matches the phone's language.",
+    description = "Gives new documents a default font and language that match the phone's language.",
 ) {
     execute {
-        val face = defaultFaceFor(java.util.Locale.getDefault())
-        val language = java.util.Locale.getDefault().toLanguageTag()
+        // The rewrite runs on the phone; there is nothing to change in the packaged templates. The patch stays so the
+        // dependency list keeps documenting what it does, and so an APK built by an older patch still gets rewritten.
+        log.info("document templates are localised on the phone, by Locale.getDefault()")
+    }
+}
 
-        val word = get("assets/template/word/template.dotx")
-        rewriteTemplate(word, "word/styles.xml") { xml ->
-            xml.replace("w:eastAsia=\"宋体\"", "w:eastAsia=\"$face\"")
-                .replace("w:eastAsia=\"zh-CN\"", "w:eastAsia=\"$language\"")
+/** `FileHelper.getTempFilePath(Context, String, String)` — where every new-document template is extracted. */
+private object TemplateCopyFingerprint : Fingerprint(
+    definingClass = "Lemo/main/FileHelper;",
+    name = "getTempFilePath",
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Landroid/content/Context;", "Ljava/lang/String;", "Ljava/lang/String;"),
+)
+
+/**
+ * Sends every template path `getTempFilePath` returns through the extension, which rewrites the extracted Office package
+ * for the phone's language. The return value is replaced in place at each of the method's exits: the two early returns
+ * (a path already outside the app's temp directory, and the extracted file) and the two fallbacks.
+ */
+private fun app.morphe.patcher.patch.BytecodePatchContext.localizeTemplatesAtRuntime() {
+    val method = TemplateCopyFingerprint.method
+    val exits = method.instructions.withIndex()
+        .filter { it.value.opcode == com.android.tools.smali.dexlib2.Opcode.RETURN_OBJECT }
+        .sortedByDescending { it.index }
+        .toList()
+    if (exits.size < 2) throw PatchException("template copy has ${exits.size} returns, expected at least 2")
+
+    for ((index, instruction) in exits) {
+        val register = (instruction as com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction).registerA
+        // One instruction in, one out, so labels and switch payloads keep pointing at the same place.
+        method.replaceInstruction(
+            index,
+            "invoke-static {v$register}, $RUNTIME->localizeTemplate(Ljava/lang/String;)Ljava/lang/String;",
+        )
+        method.addInstructions(index + 1, "move-result-object v$register\nreturn-object v$register")
+    }
+    log.info("new-document templates localised on the phone at ${exits.size} exits")
+}
+
+/** A float's IEEE-754 bits as a smali `const/high16` literal. */
+private fun Int.toHexFloat(): String = "0x%08x".format(this)
+
+private object ViewBufferSizeFingerprint : Fingerprint(
+    definingClass = "Lemo/wp/control/EWord;",
+    name = "setViewBufferSize",
+    returnType = "Z",
+    parameters = listOf("Z"),
+)
+
+private object ViewBufferIntervalFingerprint : Fingerprint(
+    definingClass = "Lemo/main/ViewBufferManager;",
+    name = "<clinit>",
+    returnType = "V",
+    parameters = emptyList(),
+)
+
+/**
+ * The editor's page buffer: its size and its refresh interval. Both are constants in the app, chosen for a 60 Hz
+ * 1080p phone; a denser, faster display wants a smaller buffer drawn more often.
+ */
+private fun app.morphe.patcher.patch.BytecodePatchContext.tuneViewBuffer(
+    scale: String,
+    interval: Int,
+) {
+    // Nothing to do at the app's own values: leaving both alone keeps the build byte-identical there.
+    if (scale == "stock" && interval == 17) {
+        log.info("page buffer left at the app's own size and interval")
+        return
+    }
+
+    // Width is a float multiply (const/high16 1.5f); height is an integer multiply (mul-int/lit8 3).
+    val widthFactor = when (scale) {
+        "small" -> 1.25f
+        "half" -> 1.0f
+        else -> 1.5f
+    }
+    val heightMultiply = when (scale) {
+        "small" -> "mul-int/lit8 v0, v0, 0x2"
+        "half" -> "mul-int/lit8 v0, v0, 0x3\ndiv-int/lit8 v0, v0, 0x2"
+        else -> null
+    }
+
+    val setSize = ViewBufferSizeFingerprint.method
+    val instructions = setSize.instructions
+
+    val width = instructions.indexOfFirst {
+        it.opcode == com.android.tools.smali.dexlib2.Opcode.CONST_HIGH16 && isFloatConst(it, 1.5f)
+    }
+    val height = instructions.indexOfFirst {
+        it.opcode == com.android.tools.smali.dexlib2.Opcode.MUL_INT_LIT8 &&
+            (it as com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction).narrowLiteral == 3
+    }
+    if (widthFactor != 1.5f && width < 0) {
+        throw PatchException("page buffer width no longer multiplies by 1.5 (index=$width)")
+    }
+    if (heightMultiply != null && height < 0) {
+        throw PatchException("page buffer height no longer multiplies by 3 (index=$height)")
+    }
+
+    if (widthFactor != 1.5f) {
+        val register = (instructions[width] as com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction)
+            .registerA
+        setSize.replaceInstruction(width, "const/high16 v$register, ${widthFactor.toRawBits().toHexFloat()}")
+    }
+    if (heightMultiply != null) {
+        setSize.replaceInstruction(height, heightMultiply.replace("\n", "\n                "))
+    }
+    log.info("page buffer set to ${widthFactor}x wide (${heightMultiply ?: "x3 tall"})")
+
+    if (interval != 17) {
+        // ViewBufferManager.<clinit>: PAINT_TIME_DURATION = round(16.6667f).
+        val clinit = ViewBufferIntervalFingerprint.method
+        val index = clinit.instructions.indexOfFirst {
+            it.opcode == com.android.tools.smali.dexlib2.Opcode.CONST && isFloatConst(it, 16.6667f)
         }
-
-        val excel = get("assets/template/excel/template.xltx")
-        rewriteTemplate(excel, "xl/styles.xml") { xml ->
-            xml.replace("<name val=\"宋体\"/>", "<name val=\"$face\"/>")
-        }
-
-        val powerpoint = get("assets/template/ppt/template.potx")
-        rewriteTemplate(powerpoint, "ppt/theme/theme1.xml") { xml ->
-            xml.replace("<a:ea typeface=\"\"", "<a:ea typeface=\"$face\"")
-        }
-
-        log.info("document templates default to $face for $language")
+        if (index < 0) throw PatchException("buffer refresh interval is no longer 16.6667f")
+        val register = (clinit.instructions[index] as com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction)
+            .registerA
+        clinit.replaceInstruction(index, "const v$register, ${interval.toFloat().toRawBits().toHexFloat()}")
+        log.info("page buffer refresh interval set to ${interval}ms")
     }
 }
 
 /**
- * The face to write into a new document for [locale]. The names are resolved by Android at draw time, and it fills in
- * a face that has the script from its own per-language fallback chain, so a family name that only covers Latin still
- * draws Hangul: "sans-serif" is Roboto plus the phone's Korean fallback (Noto Sans CJK on this build). Names a phone
- * does not carry fall back to the default face instead of failing, but a family it does carry is used directly, which
- * keeps the document's font name meaningful when it is opened elsewhere.
+ * Whether [instruction] loads [value] as a float constant. `const/high16` keeps only the top 16 bits of the literal
+ * and dexlib2 widens it back, while `const` carries the whole bit pattern; both end up comparable as floats.
  */
-private fun defaultFaceFor(locale: java.util.Locale): String = when (locale.language) {
-    "ko" -> "sans-serif"
-    "zh" -> locale.let { if (it.country == "TW" || it.country == "HK") "sans-serif" else "宋体" }
-    "ja" -> "sans-serif"
-    else -> "sans-serif"
-}
-
-/** Rewrites one part of a zipped template, leaving every other part byte-for-byte as it was. */
-private fun rewriteTemplate(
-    file: java.io.File,
-    part: String,
-    rewrite: (String) -> String,
-) {
-    if (!file.isFile) return
-    val rewritten = java.io.ByteArrayOutputStream()
-    java.util.zip.ZipFile(file).use { zip ->
-        java.util.zip.ZipOutputStream(rewritten).use { out ->
-            for (item in zip.entries()) {
-                val bytes = zip.getInputStream(item).use { it.readBytes() }
-                val replacement = if (item.name == part) {
-                    rewrite(String(bytes, Charsets.UTF_8)).toByteArray(Charsets.UTF_8)
-                } else {
-                    bytes
-                }
-                out.putNextEntry(java.util.zip.ZipEntry(item.name))
-                out.write(replacement)
-                out.closeEntry()
-            }
-        }
-    }
-    file.writeBytes(rewritten.toByteArray())
+private fun isFloatConst(
+    instruction: com.android.tools.smali.dexlib2.iface.instruction.Instruction,
+    value: Float,
+): Boolean {
+    val narrow = (instruction as? com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction)
+        ?.narrowLiteral ?: return false
+    // The app carries 16.6667f, which neither the decimal literal nor a bit-for-bit compare reproduces exactly.
+    return kotlin.math.abs(Float.fromBits(narrow) - value) < 0.01f
 }
 
 /**
@@ -244,6 +331,79 @@ private object SelectTextFingerprint : Fingerprint(
 )
 
 /**
+ * The app's own font-name resolver: `l.P(String)` maps the Windows/GDI names a document carries ("Droid Sans",
+ * "SansSerif", "Helvetica") to the Android family of the same shape, and answers null for everything else. `l.Q(style,
+ * name)` then resolves that family with `Typeface.create`, falls back to a font file the phone's font scanner found,
+ * and finally to `Typeface.DEFAULT`.
+ *
+ * "sans-serif", the name the templates are rewritten to, is not in P's list. So a document that asks for sans-serif
+ * takes the last branch: the face the phone happens to register as DEFAULT. On a phone whose default face is a
+ * user-installed font, that face is used for the glyphs while the widths the app lays text out with come from the
+ * document's family name elsewhere, and the two disagree: the letters are drawn at one advance and spaced at another,
+ * which reads as cramped, overlapping text.
+ *
+ * A document written on a Chinese phone names 宋体 in every run instead, and P answers null for that too -- but the
+ * width table (`s.c`) *does* know it, so the app lays the text out with the Chinese face's advances while drawing it
+ * with the phone's default. That is the overlap seen on the OnePlus phone and not on the Xiaomi one.
+ *
+ * Both halves are answered by `FontCompat`: P gets the family to draw with, and `s.c` gets the family to look a width
+ * table up for. They answer the same thing, so the drawn glyphs and the layout widths are always the same font.
+ */
+private object FontFamilyResolveFingerprint : Fingerprint(
+    definingClass = "Lemo/commonkit/font/l;",
+    name = "P",
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Ljava/lang/String;"),
+)
+
+/** `s.c(String)` — the hand-built width tables, keyed by family. */
+private object FontWidthTableFingerprint : Fingerprint(
+    definingClass = "Lemo/commonkit/font/s;",
+    name = "c",
+    returnType = "Lemo/commonkit/font/s;",
+    parameters = listOf("Ljava/lang/String;"),
+)
+
+private fun app.morphe.patcher.patch.BytecodePatchContext.keepSansSerifFamily() {
+    val method = FontFamilyResolveFingerprint.method
+    if (method.instructions.isEmpty()) throw PatchException("font family resolver is empty")
+    // The label sits inside the added block and jumps over it, so execution continues with the method's own first
+    // instruction. The trailing nop is the label's landing spot; it is reached only when the guard does not return.
+    method.addInstructions(
+        0,
+        """
+            if-eqz p0, :pagani_font_continue
+            invoke-static {p0}, $RUNTIME->fontFamily(Ljava/lang/String;)Ljava/lang/String;
+            move-result-object v0
+            if-eq v0, p0, :pagani_font_continue
+            return-object v0
+            :pagani_font_continue
+            nop
+        """,
+    )
+    log.info("missing document faces answered with the phone's sans-serif")
+}
+
+/**
+ * Sends a Chinese face's width table lookup to "sans-serif", which `s.c` does not know, so it answers null and
+ * `EIOFontMetrics.getReferenceCharWidth` measures the face the app actually draws. Without this the drawn font and the
+ * measured font disagree, which is what makes the letters overlap.
+ */
+private fun app.morphe.patcher.patch.BytecodePatchContext.dropMissingFontWidthTables() {
+    val method = FontWidthTableFingerprint.method
+    if (method.instructions.isEmpty()) throw PatchException("width table lookup is empty")
+    // p0 is the family; the method's own first instruction null-checks it, so the replacement happens before that.
+    method.addInstructions(
+        0,
+        """
+            invoke-static {p0}, $RUNTIME->widthTableFamily(Ljava/lang/String;)Ljava/lang/String;
+            move-result-object p0
+        """,
+    )
+    log.info("missing document faces measured with the drawn font, not a hand-built table")
+}
+
+/**
  * d0.selectText builds the word range and hands it to addHighLight, but the branch the Word editor takes for a plain
  * double-tap neither repaints nor invalidates: the range exists in the highlighter and is never drawn, so no highlight
  * and no handles appear. The other branch (a selection that grows past a line end) ends with postInvalidate, which is
@@ -295,11 +455,42 @@ val enableNonColorOsPatch = bytecodePatch(
     dependsOn(documentTemplatesPatch)
     extendWith(COLOROS_DOCUMENTS_EXTENSION)
 
+    val bufferScale by stringOption(
+        key = "bufferScale",
+        default = "stock",
+        values = mapOf(
+            "Stock (1.5x wide, 3x tall)" to "stock",
+            "Smaller (1.25x wide, 2x tall)" to "small",
+            "Half (1.0x wide, 1.5x tall)" to "half",
+        ),
+        title = "Page buffer size",
+        description = "The Word editor draws the page into an off-screen bitmap and blits it on every scroll, so a " +
+            "large buffer costs memory and background drawing time. Smaller can scroll more smoothly on " +
+            "high-resolution screens, at the cost of redrawing more during a fast fling. Stock is the app's own value.",
+        required = true,
+    )
+
+    val bufferInterval by intOption(
+        key = "bufferInterval",
+        default = 17,
+        values = mapOf("60 Hz (17 ms)" to 17, "90 Hz (11 ms)" to 11, "120 Hz (8 ms)" to 8),
+        title = "Page buffer refresh interval",
+        description = "How often the off-screen page is redrawn while scrolling. Match the phone's display refresh " +
+            "rate: 17 ms is enough for 60 Hz, 8 ms for 120 Hz.",
+        required = true,
+    )
+
     execute {
         val receivers = exportDynamicReceivers(RUNTIME)
         log.info("registerReceiver calls through ColorOS: $receivers")
         // Measured against 17.1.32: 44 calls.
         if (receivers < 30) throw PatchException("only $receivers registerReceiver calls found")
+
+        // The Word editor's page buffer: sized and refreshed for a 60 Hz 1080p phone out of the box.
+        tuneViewBuffer(bufferScale!!, bufferInterval!!)
+
+        // New-document templates: rewritten for the phone's language as the app extracts them.
+        localizeTemplatesAtRuntime()
 
         // Split screen is ColorOS's; the app treats a phone without it as normal (the editor still opens).
         SplitScreenFingerprint.method.addInstructions(0, "return-void")
@@ -335,6 +526,10 @@ val enableNonColorOsPatch = bytecodePatch(
 
         // Word: a selection built by a double tap was never painted.
         repaintAfterSelection()
+
+        // Font engine: keep "sans-serif" as its own family, and measure Chinese document faces with the drawn font.
+        keepSansSerifFamily()
+        dropMissingFontWidthTables()
 
         log.info("ColorOS framework classes answered by the extension")
     }
