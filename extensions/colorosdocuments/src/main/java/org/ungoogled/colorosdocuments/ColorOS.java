@@ -144,6 +144,47 @@ public final class ColorOS {
     }
 
     /**
+     * Rewrites a new document's template for the phone's language. Called from FileHelper.getTempFilePath, which
+     * extracts the template the app copies for a new file; see Templates. Returns the path unchanged when the file is
+     * not an Office template or cannot be rewritten.
+     */
+    public static String localizeTemplate(String path) {
+        android.util.Log.i("ColorOSDocuments", "localizeTemplate: " + path);
+        try {
+            String result = org.ungoogled.colorosdocuments.Templates.localize(path);
+            android.util.Log.i("ColorOSDocuments", "localizeTemplate -> " + result);
+            return result;
+        } catch (Throwable e) {
+            android.util.Log.w("ColorOSDocuments", "template left as shipped: " + path, e);
+            return path;
+        }
+    }
+
+    /**
+     * The family the app should draw a document's font with. Called from the app's own resolver, `l.P`; see
+     * FontCompat. Answers the name unchanged for anything the phone can draw.
+     */
+    public static String fontFamily(String family) {
+        try {
+            return org.ungoogled.colorosdocuments.FontCompat.mapMissingFont(family);
+        } catch (Throwable e) {
+            return family;
+        }
+    }
+
+    /**
+     * The family to look a width table up for. Called from `s.c`; see FontCompat. Answering "sans-serif" for a face the
+     * app does not draw makes the table lookup miss, so the app measures the face it does draw.
+     */
+    public static String widthTableFamily(String family) {
+        try {
+            return org.ungoogled.colorosdocuments.FontCompat.widthTableFamily(family);
+        } catch (Throwable e) {
+            return family;
+        }
+    }
+
+    /**
      * A stand-in of a ColorOS interface (a system service's binder interface, ...) whose calls answer "absent"
      * (false / 0 / null), with Android's own answers for the few that have one.
      */
