@@ -36,15 +36,6 @@ private object PlayerServiceFactoryFingerprint : Fingerprint(
 )
 
 /**
- * Xperia Music on a phone from another maker.
- *
- * The app asks the framework whether Sony's audio and casting APIs exist (ApiAvailabilityManager), whether Sony's DLNA
- * provider is installed (MediaRouterUtils) and which of Sony's player implementations to build (PlayerServiceCompat).
- * Every one of those answers comes from a Sony ROM library, and off an Xperia phone the lookups fail, so the four
- * methods are answered "not available" instead. Playback, the library, playlists, the equalizer and Android's own audio
- * effects do not go through any of them, so they are left exactly as they are.
- */
-/**
  * Xperia firmware's own libraries: com.sony.device is required, so the app does not install without it, and the DLNA
  * and PlayAnywhere libraries only exist on Sony phones. The DLNA route provider is part of the same stack.
  */
@@ -80,6 +71,15 @@ private val manifestPatch = resourcePatch(
     }
 }
 
+/**
+ * Xperia Music on a phone from another maker.
+ *
+ * The app asks the framework whether Sony's audio and casting APIs exist (ApiAvailabilityManager), whether Sony's DLNA
+ * provider is installed (MediaRouterUtils) and which of Sony's player implementations to build (PlayerServiceCompat).
+ * Every one of those answers comes from a Sony ROM library, and off an Xperia phone the lookups fail, so the four
+ * methods are answered "not available" instead. Playback, the library, playlists, the equalizer and Android's own audio
+ * effects do not go through any of them, so they are left exactly as they are.
+ */
 @Suppress("unused")
 val enableNonXperiaPatch = bytecodePatch(
     name = "Enable non-Xperia ROM support",

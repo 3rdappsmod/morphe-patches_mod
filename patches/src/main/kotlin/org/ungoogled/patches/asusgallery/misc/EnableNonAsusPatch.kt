@@ -23,14 +23,6 @@ private object GalleryActivityFingerprint : Fingerprint(
 )
 
 /**
- * ASUS Gallery on a phone from another maker.
- *
- * The app expects the ZenFone's own features, its OpenCL and DSP libraries and, above all, "All files access" - on an
- * ASUS phone it is a system app and holds that already. The manifest makes the features optional and grants the
- * storage permission; the activity asks for "All files access" on first start, which is what Android 11+ requires of an
- * ordinary install.
- */
-/**
  * ZenUI is the launcher and settings app ASUS ships; the gallery only names it as an optional feature, but the
  * required flag alone would stop the install. The OpenCL and Qualcomm DSP libraries are chipset specific: most phones
  * have them, some do not, and the gallery falls back to its CPU paths. "All files access" is what the gallery needs to
@@ -89,6 +81,14 @@ private val manifestPatch = resourcePatch(
     }
 }
 
+/**
+ * ASUS Gallery on a phone from another maker.
+ *
+ * The app expects the ZenFone's own features, its OpenCL and DSP libraries and, above all, "All files access" - on an
+ * ASUS phone it is a system app and holds that already. The manifest makes the features optional and grants the
+ * storage permission; the activity asks for "All files access" on first start, which is what Android 11+ requires of an
+ * ordinary install.
+ */
 @Suppress("unused")
 val enableNonAsusPatch = bytecodePatch(
     name = "Enable non-ASUS ROM support",
