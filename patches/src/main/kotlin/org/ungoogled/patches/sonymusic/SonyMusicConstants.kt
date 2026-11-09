@@ -15,7 +15,7 @@ object SonyMusicConstants {
         apkFileType = ApkFileType.APK,
         appIconColor = 0x000000,
         targets = listOf(
-            AppTarget(version = "9.4.17.A.0.11"),
+            AppTarget(version = "9.4.17.A.0.11", minSdk = 30, description = "needs Android 11 or newer"),
         ),
     )
 }

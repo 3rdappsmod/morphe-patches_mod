@@ -24,6 +24,7 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 import org.ungoogled.patches.coloros.exportDynamicReceivers
 import org.ungoogled.patches.coloros.privateFrameworkClassesPatch
 import org.ungoogled.patches.colorosdocuments.ColorOsDocumentsConstants.COMPATIBILITY_COLOROS_DOCUMENTS
+import org.ungoogled.patches.shared.supportedVersionCheck
 import org.w3c.dom.Element
 
 internal const val COLOROS_DOCUMENTS_EXTENSION = "extensions/colorosdocuments.mpe"
@@ -542,6 +543,7 @@ val enableNonColorOsPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_COLOROS_DOCUMENTS)
+    dependsOn(supportedVersionCheck(COMPATIBILITY_COLOROS_DOCUMENTS))
     dependsOn(privateClassesPatch)
     dependsOn(manifestPatch)
     dependsOn(documentTemplatesPatch)

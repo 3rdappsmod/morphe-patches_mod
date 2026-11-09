@@ -5,6 +5,7 @@ import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import org.ungoogled.patches.xiaomi.exportDynamicReceivers
 import org.ungoogled.patches.xiaomiremote.XiaomiRemoteConstants.COMPATIBILITY_XIAOMI_REMOTE
+import org.ungoogled.patches.shared.supportedVersionCheck
 import org.w3c.dom.Element
 
 internal const val XIAOMI_REMOTE_EXTENSION = "extensions/xiaomiremote.mpe"
@@ -58,6 +59,7 @@ val enableNonHyperOsPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_XIAOMI_REMOTE)
+    dependsOn(supportedVersionCheck(COMPATIBILITY_XIAOMI_REMOTE))
     dependsOn(manifestPatch)
     extendWith(XIAOMI_REMOTE_EXTENSION)
 

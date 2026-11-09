@@ -12,7 +12,7 @@ object ColorOsDocumentsConstants {
         apkFileType = ApkFileType.APK,
         appIconColor = 0xFF7A00,
         targets = listOf(
-            AppTarget(version = "17.1.32"),
+            AppTarget(version = "17.1.32", minSdk = 35, description = "needs Android 15 or newer"),
         ),
     )
 }

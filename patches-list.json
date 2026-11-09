@@ -8,6 +8,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -23,8 +24,8 @@
               "version": "2.12.0.60_250822",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
+              "minSdk": 34,
+              "description": "needs Android 14 or newer"
             }
           ]
         }
@@ -37,6 +38,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -52,8 +54,8 @@
               "version": "3.8.0.98_250909",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
+              "minSdk": 34,
+              "description": "needs Android 14 or newer"
             }
           ]
         }
@@ -66,6 +68,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "ResourcePatch",
         "ResourcePatch"
       ],
@@ -82,13 +85,40 @@
               "version": "17.1.32",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
+              "minSdk": 35,
+              "description": "needs Android 15 or newer"
             }
           ]
         }
       ],
-      "options": []
+      "options": [
+        {
+          "key": "bufferScale",
+          "title": "Page buffer size",
+          "description": "The Word editor draws the page into an off-screen bitmap and blits it on every scroll, so a large buffer costs memory and background drawing time. Smaller can scroll more smoothly on high-resolution screens, at the cost of redrawing more during a fast fling. Stock is the app's own value.",
+          "required": true,
+          "type": "kotlin.String",
+          "default": "half",
+          "values": {
+            "Stock (1.5x wide, 3x tall)": "stock",
+            "Smaller (1.25x wide, 2x tall)": "small",
+            "Half (1.0x wide, 1.5x tall)": "half"
+          }
+        },
+        {
+          "key": "bufferInterval",
+          "title": "Page buffer refresh interval",
+          "description": "How often the off-screen page is redrawn while scrolling. Match the phone's display refresh rate: 17 ms is enough for 60 Hz, 8 ms for 120 Hz.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 8,
+          "values": {
+            "60 Hz (17 ms)": 17,
+            "90 Hz (11 ms)": 11,
+            "120 Hz (8 ms)": 8
+          }
+        }
+      ]
     },
     {
       "name": "Enable non-HyperOS ROM support",
@@ -96,6 +126,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -111,8 +142,8 @@
               "version": "7.2.5R",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
+              "minSdk": 29,
+              "description": "needs Android 10 or newer"
             }
           ]
         }
@@ -125,6 +156,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "ResourcePatch",
         "BytecodePatch",
         "BytecodePatch",
@@ -144,8 +176,8 @@
               "version": "16.2.45.1",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
+              "minSdk": 28,
+              "description": "needs Android 9 or newer"
             }
           ]
         }
@@ -158,6 +190,7 @@
       "default": true,
       "category": null,
       "dependencies": [
+        "BytecodePatch",
         "ResourcePatch"
       ],
       "compatiblePackages": [
@@ -173,8 +206,8 @@
               "version": "9.4.17.A.0.11",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
+              "minSdk": 30,
+              "description": "needs Android 11 or newer"
             }
           ]
         }

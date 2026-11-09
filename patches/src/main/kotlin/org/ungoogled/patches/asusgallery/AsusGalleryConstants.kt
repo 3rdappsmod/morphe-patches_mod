@@ -15,7 +15,7 @@ object AsusGalleryConstants {
         apkFileType = ApkFileType.APK,
         appIconColor = 0x1B4B8F,
         targets = listOf(
-            AppTarget(version = "3.8.0.98_250909"),
+            AppTarget(version = "3.8.0.98_250909", minSdk = 34, description = "needs Android 14 or newer"),
         ),
     )
 }
