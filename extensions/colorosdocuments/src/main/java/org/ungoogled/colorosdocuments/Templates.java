@@ -164,8 +164,7 @@ public final class Templates {
         if ("ko".equals(language)) return "ko-KR";
         if ("ja".equals(language)) return "ja-JP";
         if ("zh".equals(language)) {
-            String country = locale.getCountry();
-            return ("TW".equals(country) || "HK".equals(country)) ? "zh-TW" : "zh-CN";
+            return usesTraditionalChinese(locale) ? "zh-TW" : "zh-CN";
         }
         String tag = locale.toLanguageTag();
         return tag.isEmpty() || "und".equals(tag) ? "en-US" : tag;
@@ -177,10 +176,16 @@ public final class Templates {
         if ("ko".equals(language)) return 129;
         if ("ja".equals(language)) return 128;
         if ("zh".equals(language)) {
-            String country = locale.getCountry();
-            return ("TW".equals(country) || "HK".equals(country)) ? 136 : 134;
+            return usesTraditionalChinese(locale) ? 136 : 134;
         }
         return 0;
+    }
+
+    private static boolean usesTraditionalChinese(Locale locale) {
+        if ("Hant".equals(locale.getScript())) return true;
+        if ("Hans".equals(locale.getScript())) return false;
+        String country = locale.getCountry();
+        return "TW".equals(country) || "HK".equals(country) || "MO".equals(country);
     }
 
     /** The folder count suffix uses the current device language, not the patch-building machine's. */
@@ -188,7 +193,7 @@ public final class Templates {
         switch (Locale.getDefault().getLanguage()) {
             case "ko": return "개  |  ";
             case "ja": return "件  |  ";
-            case "zh": return "项  |  ";
+            case "zh": return usesTraditionalChinese(Locale.getDefault()) ? "項  |  " : "项  |  ";
             default: return "items  |  ";
         }
     }
