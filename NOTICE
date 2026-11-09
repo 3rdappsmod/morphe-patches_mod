@@ -27,23 +27,3 @@ Attribution
 Danpoong patches is derived from bearinmind patches (https://github.com/bearinmindcat/morphe-patches),
 Copyright bearinmindcat, licensed under the GNU General Public License v3.0. The patches kept from it remain
 under that licence; see the repository's git history for the original authorship of each file.
-
-
-Third-party components
-======================
-
-LAME MP3 encoder (libandroidlame.so, bundled by the OnePlus Recorder patch)
----------------------------------------------------------------------------
-The MP3 encoder used when OnePlus Recorder runs on a phone without its ColorOS engine is LAME, obtained as the
-prebuilt Android library shipped with TAndroidLame (https://github.com/naveensingh/TAndroidLame, in turn based on
-https://github.com/naman14/TAndroidLame). LAME is licensed under the GNU Lesser General Public License, version 2.1:
-
-  LAME, Copyright (c) 1998-2024 The LAME Project, https://lame.sourceforge.io/
-  This library is free software; you can redistribute it and/or modify it under the terms of the GNU Lesser
-  General Public License as published by the Free Software Foundation; either version 2.1 of the License, or
-  (at your option) any later version. It is distributed in the hope that it will be useful, but WITHOUT ANY
-  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-  GNU Lesser General Public License for more details: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
-
-The library is bundled unmodified. Its JNI entry points are bound to the Java package com.naman14.androidlame, which
-is why the small binding class in the recorder extension keeps that package and class name.
