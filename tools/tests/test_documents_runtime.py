@@ -114,11 +114,21 @@ public class DocumentsRuntimeTest {
             case "failure": unchanged(Path.of(args[1])); break;
             case "locale":
                 for (String[] row : new String[][] {{"ko-KR", "개  |  "}, {"ja-JP", "件  |  "},
-                        {"zh-CN", "项  |  "}, {"en-US", "items  |  "}}) {
+                        {"zh-CN", "项  |  "}, {"zh-Hant", "項  |  "}, {"zh-MO", "項  |  "},
+                        {"zh-Hans-TW", "项  |  "}, {"en-US", "items  |  "}}) {
                     Locale.setDefault(Locale.forLanguageTag(row[0]));
                     if (!Templates.folderCountSuffix().equals(row[1])) throw new AssertionError(row[0]);
                 }
                 break;
+            case "chinese": {
+                Locale.setDefault(Locale.forLanguageTag(args[1]));
+                Path p = Path.of(args[2]); Templates.localize(p.toString());
+                String text = xml(p);
+                if (p.toString().endsWith(".docx") ? !text.contains("w:eastAsia=\"" + args[3] + "\"")
+                        : !text.contains("<charset val=\"" + args[4] + "\"/>"))
+                    throw new AssertionError("wrong Chinese language/charset: " + args[1]);
+                break;
+            }
             case "french": {
                 Locale.setDefault(Locale.FRANCE);
                 Path p = Path.of(args[1]); Templates.localize(p.toString());
@@ -208,6 +218,15 @@ class DocumentsRuntimeTests(unittest.TestCase):
                 path = self.stock(asset, self.directory / ("new" + suffix))
                 self.run_case("stock", path)
                 self.assert_font_slots(path)
+
+    def test_chinese_script_and_region_choose_language_and_charset(self):
+        for locale, tag, charset in [("zh-Hant", "zh-TW", 136), ("zh-MO", "zh-TW", 136),
+                                     ("zh-Hant-CN", "zh-TW", 136), ("zh-Hans-TW", "zh-CN", 134),
+                                     ("zh-CN", "zh-CN", 134)]:
+            with self.subTest(locale=locale):
+                for asset, suffix in [("word/template.dotx", ".docx"), ("excel/template.xltx", ".xlsx")]:
+                    path = self.stock(asset, self.directory / (locale + suffix))
+                    self.run_case("chinese", locale, path, tag, charset)
 
     def test_non_asian_language_tag_is_preserved(self):
         self.run_case("french", self.stock("word/template.dotx", self.directory / "french.docx"))
