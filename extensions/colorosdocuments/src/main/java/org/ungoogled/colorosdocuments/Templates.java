@@ -3,6 +3,10 @@ package org.ungoogled.colorosdocuments;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.security.MessageDigest;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
@@ -17,8 +21,7 @@ import java.util.zip.ZipOutputStream;
  * The templates ship with Chinese defaults: Word and Excel name 宋体, PowerPoint leaves its east-asian slot empty and
  * repeats 宋体 in every slide master and layout, and all three tag their runs "zh-CN". A phone in another language then
  * either draws the text in a face it does not have, or shapes it with the wrong east-asian face and gets the widths
- * wrong. The patch rewrites the templates while building the APK, but that runs on the machine that builds the patch --
- * its locale is not the phone's, so a bundle built in English tagged every Korean document "en".
+ * wrong. Rewriting at patch-build time would use the build machine's locale rather than the phone's.
  *
  * Doing the rewrite here instead makes it depend on the phone: Android's current locale decides the face, the language
  * tag and the Excel charset, and the same APK serves every language. Files that are not templates (PDF, TXT) are left
@@ -32,7 +35,7 @@ public final class Templates {
      * Rewrites the template at [path] for the phone's language and returns the same path, or [path] unchanged when it
      * is not an Office template or cannot be rewritten (the app then uses it as it shipped).
      */
-    public static String localize(String path) {
+    public static synchronized String localize(String path) {
         if (path == null) return null;
         String name = path.toLowerCase(Locale.ROOT);
         // The app renames the template on the way out: template.dotx becomes 새 문서.docx, template.xltx becomes
@@ -40,28 +43,12 @@ public final class Templates {
         // check has to cover both the template's own suffix and the document suffix it is copied to.
         boolean office = name.endsWith(".dotx") || name.endsWith(".xltx") || name.endsWith(".potx")
             || name.endsWith(".docx") || name.endsWith(".xlsx") || name.endsWith(".pptx");
-        android.util.Log.i("ColorOSDocuments", "Templates.localize: path=" + path + " office=" + office);
         if (!office) return path;
 
         File file = new File(path);
-        if (!file.isFile()) {
-            android.util.Log.w("ColorOSDocuments", "Templates.localize: not a file: " + path);
-            return path;
-        }
-
-        // Only a package that still carries the shipping Chinese defaults is rewritten. An ordinary document the user
-        // opens goes through this same method (they share the temp directory), and its own fonts must be left alone.
-        if (!isUntouchedTemplate(file)) {
-            android.util.Log.i("ColorOSDocuments", "Templates.localize: not a stock template, left alone");
-            return path;
-        }
-
+        if (!file.isFile() || !isUntouchedTemplate(file)) return path;
         Locale locale = Locale.getDefault();
         String tag = eastAsianLanguage(locale);
-        if (alreadyLocalized(file, tag)) {
-            android.util.Log.i("ColorOSDocuments", "Templates.localize: already " + tag);
-            return path;
-        }
 
         try {
             rewrite(file, locale);
@@ -73,45 +60,29 @@ public final class Templates {
         }
     }
 
-    /**
-     * Whether [file] is still the package the app ships, never opened or edited. The app shares one temp directory
-     * between the templates it copies and the documents it opens, so the check has to be on the content: a stock
-     * template still names a Chinese face or the Chinese language, which no document this patch wrote does.
-     */
-    private static boolean isUntouchedTemplate(File file) {
-        try (ZipFile zip = new ZipFile(file)) {
-            String[][] marks = {
-                { "word/styles.xml", "w:eastAsia=\"宋体\"" },
-                { "xl/styles.xml", "<charset val=\"134\"/>" },
-                { "ppt/slideMasters/slideMaster1.xml", "lang=\"zh-CN\"" },
-            };
-            for (String[] mark : marks) {
-                ZipEntry entry = zip.getEntry(mark[0]);
-                if (entry == null) continue;
-                return read(zip.getInputStream(entry)).contains(mark[1]);
-            }
-        } catch (Exception ignored) {
-            // Unreadable: treat it as a document, not a template, and leave it alone.
-        }
-        return false;
-    }
+    // Exact assets in the supported 17.1.32 APK, before FileHelper renames them to docx/xlsx/pptx.
+    // A Chinese style or language alone also appears in user documents and must never authorize a rewrite.
+    private static final String[] TEMPLATE_SHA256 = {
+        "d8aa53569dfb9587e53f598a5146d22c7445982aca1ca5f466c0a70466735d46",
+        "5d114ffd12f6b09dcb3cd8b3f7498e1f1bb5034c137ec1984cafef2676f9628c",
+        "88f23bd4e4a3f5563183d540cf4b1bf3fe3b727af080e821ced2b66a0c4ae829",
+    };
 
-    /** Whether the part that carries this format's language tag already names [tag]. */
-    private static boolean alreadyLocalized(File file, String tag) {
-        try (ZipFile zip = new ZipFile(file)) {
-            // Each format keeps its default in a different part; whichever the package has decides.
-            String[][] marks = {
-                { "word/styles.xml", "w:eastAsia=\"" + tag + "\"" },
-                { "xl/styles.xml", "<charset val=\"" + charsetFor(Locale.getDefault()) + "\"/>" },
-                { "ppt/slideMasters/slideMaster1.xml", "lang=\"" + tag + "\"" },
-            };
-            for (String[] mark : marks) {
-                ZipEntry entry = zip.getEntry(mark[0]);
-                if (entry == null) continue;
-                return read(zip.getInputStream(entry)).contains(mark[1]);
+    private static boolean isUntouchedTemplate(File file) {
+        long length = file.length();
+        if (length != 12276 && length != 5745 && length != 34599) return false;
+        try (InputStream in = new FileInputStream(file)) {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] buffer = new byte[8192];
+            int count;
+            while ((count = in.read(buffer)) != -1) digest.update(buffer, 0, count);
+            StringBuilder hex = new StringBuilder(64);
+            for (byte value : digest.digest()) hex.append(String.format(Locale.ROOT, "%02x", value & 0xff));
+            for (String expected : TEMPLATE_SHA256) {
+                if (expected.contentEquals(hex)) return true;
             }
         } catch (Exception ignored) {
-            // Unreadable: let the rewrite try, it fails the same way and the caller keeps the shipped file.
+            // Unknown or unreadable file: preserve it unchanged.
         }
         return false;
     }
@@ -136,8 +107,18 @@ public final class Templates {
             }
         }
 
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            out.write(buffer.toByteArray());
+        // Prepare and sync a sibling file first. If replacement is unsupported or fails,
+        // keep the original template rather than risking a partially written Office package.
+        File temporary = File.createTempFile("danpoong-template-", ".tmp", file.getAbsoluteFile().getParentFile());
+        try {
+            try (FileOutputStream out = new FileOutputStream(temporary)) {
+                out.write(buffer.toByteArray());
+                out.getFD().sync();
+            }
+            Files.move(temporary.toPath(), file.toPath(),
+                StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+        } finally {
+            temporary.delete();
         }
     }
 
@@ -212,7 +193,8 @@ public final class Templates {
             String country = locale.getCountry();
             return ("TW".equals(country) || "HK".equals(country)) ? "zh-TW" : "zh-CN";
         }
-        return "en-US";
+        String tag = locale.toLanguageTag();
+        return tag.isEmpty() || "und".equals(tag) ? "en-US" : tag;
     }
 
     /** The Windows charset number that matches the language (129 Hangul, 128 Shift-JIS, 136 Big5, 134 GB2312). */
@@ -227,8 +209,14 @@ public final class Templates {
         return 0;
     }
 
-    private static String read(InputStream in) throws Exception {
-        return new String(readBytes(in), StandardCharsets.UTF_8);
+    /** The folder count suffix uses the current device language, not the patch-building machine's. */
+    public static String folderCountSuffix() {
+        switch (Locale.getDefault().getLanguage()) {
+            case "ko": return "개  |  ";
+            case "ja": return "件  |  ";
+            case "zh": return "项  |  ";
+            default: return "items  |  ";
+        }
     }
 
     private static byte[] readBytes(InputStream in) throws Exception {

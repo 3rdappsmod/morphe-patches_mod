@@ -45,13 +45,20 @@ public final class MonoWidths {
         }
 
         private static Field field(Class<?> type, String name) {
-            try {
-                Field field = type.getDeclaredField(name);
-                field.setAccessible(true);
-                return field;
-            } catch (Throwable ignored) {
-                return null;
+            // SSFontMetrics inherits these fields from EIOFontMetrics. getDeclaredField on the
+            // concrete subclass alone silently disables seed clearing in the spreadsheet editor.
+            for (Class<?> current = type; current != null; current = current.getSuperclass()) {
+                try {
+                    Field field = current.getDeclaredField(name);
+                    field.setAccessible(true);
+                    return field;
+                } catch (NoSuchFieldException ignored) {
+                    // Continue with the superclass, including private inherited fields.
+                } catch (SecurityException e) {
+                    return null;
+                }
             }
+            return null;
         }
 
         private static Method method(Class<?> type, String name, Class<?>... parameters) {
@@ -93,8 +100,6 @@ public final class MonoWidths {
         }
         return cached;
     }
-
-
 
     /**
      * Called right after the original seeds the shared advance, so a jamo does not become the value that ideographs and

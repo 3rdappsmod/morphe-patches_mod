@@ -399,7 +399,7 @@ private object MonospacedWidthFingerprint : Fingerprint(
 )
 
 /**
- * Fixes Hangul compatibility jamo overlapping while a syllable is composed in Word and Excel.
+ * Gives the Word font metrics individual jamo advances and prevents jamo from seeding the CJK cache.
  *
  * `o.v()` classifies U+3100..DFFF as one class, which covers both CJK ideographs and Hangul, and
  * `getMonospacedCharWidth` keeps a single advance for that class in `monospacedWidth`. The first character to arrive
@@ -466,6 +466,61 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.fixHangulJamoWidths() 
         )
     }
     log.info("jamo seeds of the shared advance undone at ${seeds.size} sites: $seeds")
+}
+
+/** Spreadsheet metrics override the base method, so the Word hook cannot cover this body. */
+private object SsMonospacedWidthFingerprint : Fingerprint(
+    definingClass = "Lemo/ss/plugins/editor/font/SSFontMetrics;",
+    name = "getMonospacedCharWidth",
+    returnType = "F",
+    parameters = listOf("C", "Lemo/simpletext/view/d;", "I"),
+)
+
+/**
+ * The spreadsheet keeps no monospacedWidthC: clear its inherited shared field after a jamo seed.
+ * The read hook also measures UNSET, so clearing cannot leak a negative advance to getRealWidth.
+ * Registers are the original locals (v0 metrics, v3 char, v4 float), before parameters are reused.
+ */
+private fun app.morphe.patcher.patch.BytecodePatchContext.fixSpreadsheetJamoWidths() {
+    val method = SsMonospacedWidthFingerprint.method
+    val instructions = method.instructions
+    // Pinned 17.1.32: p0=v20, p1=v21, p2=v22, p3=v23. Never encode them in a 35c invoke.
+    if (method.implementation!!.registerCount != 24 ||
+        instructions[0].opcode != com.android.tools.smali.dexlib2.Opcode.MOVE_OBJECT_FROM16 ||
+        (instructions[0] as com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction).registerA != 0) {
+        throw PatchException("spreadsheet metrics register layout changed")
+    }
+    fun widthField(instruction: com.android.tools.smali.dexlib2.builder.BuilderInstruction): Boolean {
+        val field = (instruction as? com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction)
+            ?.reference as? com.android.tools.smali.dexlib2.iface.reference.FieldReference
+        return field?.definingClass == "Lemo/commonkit/font/EIOFontMetrics;" &&
+            field.name == "monospacedWidth" && field.type == "F"
+    }
+    val reads = instructions.indices.filter {
+        instructions[it].opcode == com.android.tools.smali.dexlib2.Opcode.IGET && widthField(instructions[it])
+    }
+    val seeds = instructions.indices.filter {
+        instructions[it].opcode == com.android.tools.smali.dexlib2.Opcode.IPUT && widthField(instructions[it])
+    }
+    if (reads.size != 2 || seeds.size != 1) throw PatchException("spreadsheet advance cache shape changed")
+    val read = reads[1]
+    val load = instructions[read] as com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
+    val seed = instructions[seeds.single()] as com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
+    val conversion = instructions[read + 1] as? BuilderInstruction35c
+    if (load.registerA != 4 || load.registerB != 0 || seed.registerA != 4 || seed.registerB != 0 ||
+        conversion?.reference?.toString() !=
+        "Lemo/ss/plugins/editor/font/SSFontMetrics;->getRealWidth(FLemo/simpletext/view/d;)F" ||
+        conversion.registerC != 0 || conversion.registerD != 4 || conversion.registerE != 1) {
+        throw PatchException("spreadsheet advance registers changed")
+    }
+    // Insert from the higher index first. No register allocation and no writes to live object/char locals.
+    method.addInstructions(read + 1, """
+        invoke-static {v0, v3, v4}, $RUNTIME->jamoWidth(Ljava/lang/Object;CF)F
+        move-result v4
+    """)
+    method.addInstructions(seeds.single() + 1,
+        "invoke-static {v0, v3}, $RUNTIME->clearJamoSeed(Ljava/lang/Object;C)V")
+    log.info("spreadsheet jamo advances and inherited CJK seed protected")
 }
 
 /**
@@ -616,6 +671,7 @@ val enableNonColorOsPatch = bytecodePatch(
         keepSansSerifFamily()
         dropMissingFontWidthTables()
         fixHangulJamoWidths()
+        fixSpreadsheetJamoWidths()
 
         log.info("ColorOS framework classes answered by the extension")
     }
@@ -856,8 +912,9 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.localizeFolderCount() 
 
     val register = (instructions[chinese] as com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction)
         .registerA
-    method.replaceInstruction(chinese, "const-string/jumbo v$register, \"개  |  \"")
-    log.info("save sheet folder counter changed from 项 to 개")
+    method.replaceInstruction(chinese, "invoke-static {}, $RUNTIME->folderCountSuffix()Ljava/lang/String;")
+    method.addInstructions(chinese + 1, "move-result-object v$register")
+    log.info("save sheet folder counter follows the device language")
 }
 
 private fun app.morphe.patcher.patch.BytecodePatchContext.dropVaultRow() {
