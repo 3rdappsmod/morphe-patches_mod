@@ -160,6 +160,10 @@ public final class ColorOS {
         }
     }
 
+    public static String folderCountSuffix() {
+        return Templates.folderCountSuffix();
+    }
+
     /**
      * The family the app should draw a document's font with. Called from the app's own resolver, `l.P`; see
      * FontCompat. Answers the name unchanged for anything the phone can draw.
