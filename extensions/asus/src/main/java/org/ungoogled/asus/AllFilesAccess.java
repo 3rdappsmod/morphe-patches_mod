@@ -12,10 +12,12 @@ import android.provider.Settings;
  * Asks for "All files access", which ASUS Gallery and File Manager need to manage the phone's storage the way they do
  * on an ASUS phone (where they are system apps and hold it already).
  *
- * Android 11 and later grant it through a settings screen, not a runtime permission: the app opens that screen once.
+ * Android 11 and later grant it through a settings screen, not a runtime permission: the app opens that screen once
+ * per process. Returning without granting access must not send the user straight back into Settings.
  * When the app already holds it, or the screen cannot be opened, nothing happens.
  */
 public final class AllFilesAccess {
+    private static boolean requested;
     private AllFilesAccess() {
     }
 
@@ -28,10 +30,12 @@ public final class AllFilesAccess {
         return true;
     }
 
-    /** Opens the "All files access" screen for this app, once, unless it is already granted. */
+    /** Opens the "All files access" screen for this app, once per process, unless it is already granted. */
     public static void request(Activity activity) {
-        if (activity == null || granted(activity)) return;
+        if (activity == null || requested || granted(activity)) return;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return;
+        // onResume runs again when Settings closes, including when the user declines.
+        requested = true;
         try {
             Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
             intent.setData(Uri.fromParts("package", activity.getPackageName(), null));
