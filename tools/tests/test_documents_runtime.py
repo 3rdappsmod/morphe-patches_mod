@@ -2,11 +2,11 @@
 """Runtime regressions; optional stock-asset cases: DOCUMENTS_APK=/path/to/17.1.32.apk python3 this_file.py."""
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import tempfile
 import unittest
 import zipfile
+import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[2]
 JAVA = ROOT / "extensions/colorosdocuments/src/main/java/org/ungoogled/colorosdocuments"
@@ -18,6 +18,7 @@ import java.util.zip.*;
 import java.io.*;
 import org.ungoogled.colorosdocuments.MonoWidths;
 import org.ungoogled.colorosdocuments.Templates;
+import org.ungoogled.colorosdocuments.FontCompat;
 
 public class DocumentsRuntimeTest {
     public static class BaseMetrics {
@@ -92,6 +93,14 @@ public class DocumentsRuntimeTest {
             case "metrics":
                 metrics(new BaseMetrics()); metrics(new SpreadsheetMetrics()); metrics(new DerivedSpreadsheetMetrics());
                 break;
+            case "fonts":
+                for (String family : new String[] {new String("sans-serif"), "SANS-SERIF", "宋体"}) {
+                    if (!"sans-serif".equals(FontCompat.resolveFamily(family))) throw new AssertionError(family);
+                }
+                for (String family : new String[] {null, "Droid Sans", "serif", "monospace", "Arial", "Custom Font"}) {
+                    if (FontCompat.resolveFamily(family) != null) throw new AssertionError("changed user family " + family);
+                }
+                break;
             case "user": userDocument(Path.of(args[1])); break;
             case "stock": {
                 Path p = Path.of(args[1]);
@@ -135,7 +144,7 @@ class DocumentsRuntimeTests(unittest.TestCase):
         harness.write_text(HARNESS)
         cls.classes = cls.directory / "classes"
         subprocess.run(["javac", "-d", str(cls.classes), str(log), str(harness),
-                        str(JAVA / "MonoWidths.java"), str(JAVA / "Templates.java")], check=True)
+                        str(JAVA / "MonoWidths.java"), str(JAVA / "Templates.java"), str(JAVA / "FontCompat.java")], check=True)
 
     @classmethod
     def tearDownClass(cls):
@@ -158,6 +167,37 @@ class DocumentsRuntimeTests(unittest.TestCase):
     def test_user_document_with_chinese_styles_is_unchanged(self):
         self.run_case("user", self.directory / "user.docx")
 
+    def test_font_family_literal_and_preservation_of_other_families(self):
+        self.run_case("fonts")
+
+    def assert_font_slots(self, path):
+        word = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+        drawing = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+        sheet = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
+        checked = 0
+        with zipfile.ZipFile(path) as archive:
+            for name in archive.namelist():
+                if not name.endswith(".xml"):
+                    continue
+                root = ET.fromstring(archive.read(name))
+                for element in root.iter():
+                    if element.tag == word + "rFonts":
+                        for slot in ("ascii", "hAnsi", "eastAsia", "cs"):
+                            self.assertEqual("sans-serif", element.get(word + slot), (name, slot))
+                            checked += 1
+                    if element.tag in {drawing + slot for slot in ("latin", "ea", "cs", "font")}:
+                        self.assertEqual("sans-serif", element.get("typeface"), name)
+                        if "charset" in element.attrib:
+                            self.assertEqual("-127", element.get("charset"), name)
+                        self.assertNotIn("panose", element.attrib)
+                        self.assertNotIn("pitchFamily", element.attrib)
+                        checked += 1
+                if name == "xl/styles.xml":
+                    for element in root.findall(sheet + "fonts/" + sheet + "font/" + sheet + "name"):
+                        self.assertEqual("sans-serif", element.get("val"))
+                        checked += 1
+        self.assertGreater(checked, 0)
+
     def test_count_suffix_uses_current_locale(self):
         self.run_case("locale")
 
@@ -165,7 +205,9 @@ class DocumentsRuntimeTests(unittest.TestCase):
         for asset, suffix in [("word/template.dotx", ".docx"), ("excel/template.xltx", ".xlsx"),
                               ("ppt/template.potx", ".pptx")]:
             with self.subTest(asset=asset):
-                self.run_case("stock", self.stock(asset, self.directory / ("new" + suffix)))
+                path = self.stock(asset, self.directory / ("new" + suffix))
+                self.run_case("stock", path)
+                self.assert_font_slots(path)
 
     def test_non_asian_language_tag_is_preserved(self):
         self.run_case("french", self.stock("word/template.dotx", self.directory / "french.docx"))
