@@ -365,6 +365,54 @@ private object FontFamilyResolveFingerprint : Fingerprint(
     parameters = listOf("Ljava/lang/String;"),
 )
 
+/** The importer's alias lookup, missing-font fallback, and PANOSE substitution paths. */
+private object FontNameLookupFingerprint : Fingerprint(
+    definingClass = "Lemo/commonkit/font/o;",
+    name = "o",
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Ljava/lang/String;", "Z"),
+)
+
+private object FontNameFallbackFingerprint : Fingerprint(
+    definingClass = "Lemo/commonkit/font/o;",
+    name = "z",
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Ljava/lang/String;", "Z", "Z", "[B"),
+)
+
+private object FontNameSubstitutionFingerprint : Fingerprint(
+    definingClass = "Lemo/commonkit/font/o;",
+    name = "b",
+    returnType = "Ljava/lang/String;",
+    parameters = listOf("Ljava/lang/String;", "[B", "[B", "I", "Z", "Z"),
+)
+
+/** Preserve the explicit Android family instead of renaming it to Droid Sans or Arial on import. */
+private fun app.morphe.patcher.patch.BytecodePatchContext.keepSystemSansFontName() {
+    for (fingerprint in listOf(FontNameLookupFingerprint, FontNameFallbackFingerprint, FontNameSubstitutionFingerprint)) {
+        val method = fingerprint.method
+        val implementation = method.implementation ?: throw PatchException("font name resolver has no implementation")
+        if (method.accessFlags and AccessFlags.STATIC.value == 0 ||
+            implementation.registerCount - method.parameters.size < 2 || method.instructions.isEmpty()
+        ) throw PatchException("font name resolver no longer has two scratch locals")
+        // All parameters are one word. b's p0 is v21, so copy it before the four-bit invoke.
+        // Each original entry initializes v0/v1 before reading them on the fall-through path.
+        method.addInstructionsWithLabels(
+            0,
+            """
+                move-object/from16 v1, p0
+                const-string v0, "sans-serif"
+                invoke-virtual {v0, v1}, Ljava/lang/String;->equalsIgnoreCase(Ljava/lang/String;)Z
+                move-result v1
+                if-eqz v1, :original_family
+                return-object v0
+            """,
+            app.morphe.patcher.util.smali.ExternalLabel("original_family", method.instructions.first()),
+        )
+    }
+    log.info("explicit sans-serif retained through document font-name substitution")
+}
+
 /** `s.c(String)` — the hand-built width tables, keyed by family. */
 private object FontWidthTableFingerprint : Fingerprint(
     definingClass = "Lemo/commonkit/font/s;",
@@ -677,6 +725,7 @@ val enableNonColorOsPatch = bytecodePatch(
 
         // Font engine: keep "sans-serif" as its own family, and measure Chinese document faces with the drawn font.
         keepSansSerifFamily()
+        keepSystemSansFontName()
         dropMissingFontWidthTables()
         fixHangulJamoWidths()
         fixSpreadsheetJamoWidths()
