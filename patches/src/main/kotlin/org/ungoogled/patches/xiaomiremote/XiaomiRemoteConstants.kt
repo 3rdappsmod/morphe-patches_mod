@@ -15,7 +15,7 @@ object XiaomiRemoteConstants {
         apkFileType = ApkFileType.APK,
         appIconColor = 0xF26B21,
         targets = listOf(
-            AppTarget(version = "7.2.5R"),
+            AppTarget(version = "7.2.5R", minSdk = 29, description = "needs Android 10 or newer"),
         ),
     )
 }

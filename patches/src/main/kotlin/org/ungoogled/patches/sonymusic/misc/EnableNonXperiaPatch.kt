@@ -6,6 +6,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import org.ungoogled.patches.sonymusic.SonyMusicConstants.COMPATIBILITY_SONY_MUSIC
+import org.ungoogled.patches.shared.supportedVersionCheck
 import org.w3c.dom.Element
 
 private val log = java.util.logging.Logger.getLogger("SonyMusic")
@@ -87,6 +88,7 @@ val enableNonXperiaPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_SONY_MUSIC)
+    dependsOn(supportedVersionCheck(COMPATIBILITY_SONY_MUSIC))
     dependsOn(manifestPatch)
 
     execute {

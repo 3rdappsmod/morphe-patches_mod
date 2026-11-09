@@ -11,6 +11,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import org.ungoogled.patches.asusfilemanager.AsusFileManagerConstants.COMPATIBILITY_ASUS_FILE_MANAGER
+import org.ungoogled.patches.shared.supportedVersionCheck
 import org.w3c.dom.Element
 
 internal const val ASUS_FILE_MANAGER_EXTENSION = "extensions/asus.mpe"
@@ -112,6 +113,7 @@ val enableNonAsusPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_ASUS_FILE_MANAGER)
+    dependsOn(supportedVersionCheck(COMPATIBILITY_ASUS_FILE_MANAGER))
     dependsOn(manifestPatch)
     extendWith(ASUS_FILE_MANAGER_EXTENSION)
 

@@ -6,6 +6,7 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import org.ungoogled.patches.asusgallery.AsusGalleryConstants.COMPATIBILITY_ASUS_GALLERY
+import org.ungoogled.patches.shared.supportedVersionCheck
 import org.w3c.dom.Element
 
 internal const val ASUS_GALLERY_EXTENSION = "extensions/asus.mpe"
@@ -96,6 +97,7 @@ val enableNonAsusPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_ASUS_GALLERY)
+    dependsOn(supportedVersionCheck(COMPATIBILITY_ASUS_GALLERY))
     dependsOn(manifestPatch)
     extendWith(ASUS_GALLERY_EXTENSION)
 

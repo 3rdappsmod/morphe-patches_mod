@@ -15,7 +15,7 @@ object AsusFileManagerConstants {
         apkFileType = ApkFileType.APK,
         appIconColor = 0x00A0E9,
         targets = listOf(
-            AppTarget(version = "2.12.0.60_250822"),
+            AppTarget(version = "2.12.0.60_250822", minSdk = 34, description = "needs Android 14 or newer"),
         ),
     )
 }

@@ -22,7 +22,7 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 <summary><img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/sony-music.png" width="20" height="20" align="top"> Sony Music&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
-**Supported version(s):** 9.4.17.A.0.11
+**Supported version(s):** 9.4.17.A.0.11 — needs Android 11 or newer
 
 | Patch | Description | Options |
 |----------|----------------|-----------|
@@ -42,7 +42,7 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 <summary><img src="docs/icons/asus-file-manager.png" width="20" height="20" align="top"> ASUS File Manager&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/asus-file-manager.png" width="20" height="20" align="top"> ASUS File Manager&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
-**Supported version(s):** 2.12.0.60_250822
+**Supported version(s):** 2.12.0.60_250822 — needs Android 14 or newer
 
 | Patch | Description | Options |
 |----------|----------------|-----------|
@@ -54,7 +54,7 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 <summary><img src="docs/icons/asus-gallery.png" width="20" height="20" align="top"> ASUS Gallery&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/asus-gallery.png" width="20" height="20" align="top"> ASUS Gallery&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
-**Supported version(s):** 3.8.0.98_250909
+**Supported version(s):** 3.8.0.98_250909 — needs Android 14 or newer
 
 | Patch | Description | Options |
 |----------|----------------|-----------|
@@ -74,7 +74,7 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 <summary><img src="docs/icons/xiaomi-remote.png" width="20" height="20" align="top"> Mi Remote&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/xiaomi-remote.png" width="20" height="20" align="top"> Mi Remote&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
-**Supported version(s):** 7.2.5R
+**Supported version(s):** 7.2.5R — needs Android 10 or newer
 
 | Patch | Description | Options |
 |----------|----------------|-----------|
@@ -94,7 +94,7 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 <summary><img src="docs/icons/samsung-music.png" width="20" height="20" align="top"> Samsung Music&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/samsung-music.png" width="20" height="20" align="top"> Samsung Music&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
-**Supported version(s):** 16.2.45.1
+**Supported version(s):** 16.2.45.1 — needs Android 9 or newer
 
 | Patch | Description | Options |
 |----------|----------------|-----------|
@@ -114,11 +114,11 @@ Select the app you want to patch inside Morphe Manager, follow all instructions 
 <summary><img src="docs/icons/coloros-documents.png" width="20" height="20" align="top"> OnePlus Documents&nbsp;&nbsp;-&gt;&nbsp;&nbsp;<img src="docs/icons/coloros-documents.png" width="20" height="20" align="top"> OnePlus Documents&nbsp;&nbsp;•&nbsp;&nbsp;1 patch</summary>
 <br>
 
-**Supported version(s):** 17.1.32
+**Supported version(s):** 17.1.32 — needs Android 15 or newer
 
 | Patch | Description | Options |
 |----------|----------------|-----------|
-| [Enable non-ColorOS ROM support](#enable-non-coloros-rom-support) | Makes ColorOS Documents installable and usable on non-ColorOS ROMs. |  |
+| [Enable non-ColorOS ROM support](#enable-non-coloros-rom-support) | Makes ColorOS Documents installable and usable on non-ColorOS ROMs. | • Page buffer size<br>• Page buffer refresh interval |
 
 </details>
 

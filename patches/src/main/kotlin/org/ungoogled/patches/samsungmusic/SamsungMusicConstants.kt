@@ -14,7 +14,7 @@ object SamsungMusicConstants {
         apkFileType = ApkFileType.APK,
         appIconColor = 0x6522E9,
         targets = listOf(
-            AppTarget(version = "16.2.45.1"),
+            AppTarget(version = "16.2.45.1", minSdk = 28, description = "needs Android 9 or newer"),
         ),
     )
 }

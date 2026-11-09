@@ -13,6 +13,7 @@ import org.ungoogled.patches.samsung.redirectOneUiMembers
 import org.ungoogled.patches.samsung.rewriteStringLiterals
 import org.ungoogled.patches.samsungmusic.SamsungMusicConstants.COMPATIBILITY_SAMSUNG_MUSIC
 import org.ungoogled.patches.shared.addInstructionsAtLabel
+import org.ungoogled.patches.shared.supportedVersionCheck
 import org.w3c.dom.Element
 
 internal const val SAMSUNG_MUSIC_EXTENSION = "extensions/samsungmusic.mpe"
@@ -163,6 +164,7 @@ val enableNonOneUiPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_SAMSUNG_MUSIC)
+    dependsOn(supportedVersionCheck(COMPATIBILITY_SAMSUNG_MUSIC))
     dependsOn(manifestPatch, oneUiMembersPatch, collationPatch, soundEffectsPatch, mediaBrowserPatch)
     extendWith(SAMSUNG_MUSIC_EXTENSION)
 }
