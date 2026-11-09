@@ -10,7 +10,7 @@ package org.ungoogled.colorosdocuments;
  * and `EIOFontMetrics.getReferenceCharWidth` prefers it over measuring the face that is actually drawn. The drawing
  * face and the measuring face then disagree, which is what makes the letters overlap.
  *
- * Both decisions have to move together. {@link #mapMissingFont} answers the family the resolver should use instead, and
+ * Both decisions have to move together. {@link #resolveFamily} answers the family the resolver should use instead, and
  * {@link #widthTableFamily} answers the family the width table should be looked up for; feeding the width table a
  * family it does not know makes it answer null, so the app measures the real face instead. The document keeps its own
  * font names -- nothing is written back.
@@ -48,12 +48,13 @@ public final class FontCompat {
         "等线 Light",
     };
 
-    /**
-     * The family the app should draw [family] with, or [family] itself when it is not one of the faces above. Called
-     * from `l.P`, which decides the {@code Typeface} for both the drawing pass and the measurement pass.
-     */
-    public static String mapMissingFont(String family) {
-        return isMissing(family) ? "sans-serif" : family;
+    /** A handled Android family, or null so the app can resolve every other font normally. */
+    public static String resolveFamily(String family) {
+        if (family == null) return null;
+        // The original l.P recognizes Droid Sans but not the literal sans-serif our templates use.
+        // A nullable result also avoids relying on String reference inequality in the injected guard.
+        if ("sans-serif".equalsIgnoreCase(family) || isMissing(family)) return "sans-serif";
+        return null;
     }
 
     /**

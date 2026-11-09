@@ -376,7 +376,7 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.keepSansSerifFamily() 
             if-eqz p0, :pagani_font_continue
             invoke-static {p0}, $RUNTIME->fontFamily(Ljava/lang/String;)Ljava/lang/String;
             move-result-object v0
-            if-eq v0, p0, :pagani_font_continue
+            if-eqz v0, :pagani_font_continue
             return-object v0
             :pagani_font_continue
             nop

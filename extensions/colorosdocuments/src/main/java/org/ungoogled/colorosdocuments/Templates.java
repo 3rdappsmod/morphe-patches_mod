@@ -23,7 +23,7 @@ import java.util.zip.ZipOutputStream;
  * either draws the text in a face it does not have, or shapes it with the wrong east-asian face and gets the widths
  * wrong. Rewriting at patch-build time would use the build machine's locale rather than the phone's.
  *
- * Doing the rewrite here instead makes it depend on the phone: Android's current locale decides the face, the language
+ * Doing the rewrite here instead makes it depend on the phone: One sans-serif family supplies the glyphs; Android's current locale decides the language
  * tag and the Excel charset, and the same APK serves every language. Files that are not templates (PDF, TXT) are left
  * alone, as are templates already written for this locale.
  */
@@ -88,7 +88,7 @@ public final class Templates {
     }
 
     private static void rewrite(File file, Locale locale) throws Exception {
-        String face = faceFor(locale);
+        String face = faceFor();
         String tag = eastAsianLanguage(locale);
         int charset = charsetFor(locale);
 
@@ -129,58 +129,32 @@ public final class Templates {
 
     private static String rewritePart(String part, String xml, String face, String tag, int charset) {
         String out = xml;
-
-        // Word and PowerPoint name Chinese faces outright.
-        for (String chinese : CHINESE_FACES) {
-            out = out.replace("w:eastAsia=\"" + chinese + "\"", "w:eastAsia=\"" + face + "\"");
-            out = out.replace("<w:font w:name=\"" + chinese + "\">", "<w:font w:name=\"" + face + "\">");
-            out = out.replace("<a:latin typeface=\"" + chinese + "\"", "<a:latin typeface=\"" + face + "\"");
-            out = out.replace("<a:ea typeface=\"" + chinese + "\"", "<a:ea typeface=\"" + face + "\"");
-            out = out.replace("<a:cs typeface=\"" + chinese + "\"", "<a:cs typeface=\"" + face + "\"");
-            out = out.replace("<name val=\"" + chinese + "\"/>", "<name val=\"" + face + "\"/>");
+        // Bind all Word scripts explicitly; otherwise theme references keep different Latin fonts.
+        out = out.replaceAll("<w:rFonts\\b[^>]*/>", "<w:rFonts w:ascii=\"" + face
+            + "\" w:hAnsi=\"" + face + "\" w:eastAsia=\"" + face + "\" w:cs=\"" + face + "\"/>");
+        out = out.replaceAll("(<a:(?:latin|ea|cs)\\b[^>]*\\btypeface=\")[^\"]*(\")", "$1" + face + "$2");
+        out = out.replaceAll("(<a:font\\b[^>]*\\btypeface=\")[^\"]*(\")", "$1" + face + "$2");
+        // Drop the old face's PANOSE/pitch hints; DrawingML charset is a signed Windows charset byte.
+        out = out.replaceAll("(<a:(?:latin|ea|cs|font)\\b[^>]*?)\\s+panose=\"[^\"]*\"", "$1");
+        out = out.replaceAll("(<a:(?:latin|ea|cs|font)\\b[^>]*?)\\s+pitchFamily=\"[^\"]*\"", "$1");
+        out = out.replaceAll("(<a:(?:latin|ea|cs|font)\\b[^>]*\\bcharset=\")[^\"]*(\")",
+            "$1" + (byte) charset + "$2");
+        if (part.equals("xl/styles.xml")) {
+            out = out.replaceAll("<name val=\"[^\"]*\"\\s*/>", "<name val=\"" + face + "\"/>");
         }
-
-        // The script slots a theme carries per writing system: the Hangul and Han entries decide what the app draws.
-        out = out.replaceAll("<a:font script=\"Hang\" typeface=\"[^\"]*\"", "<a:font script=\"Hang\" typeface=\"" + face + "\"");
-        out = out.replaceAll("<a:font script=\"Hans\" typeface=\"[^\"]*\"", "<a:font script=\"Hans\" typeface=\"" + face + "\"");
-        out = out.replaceAll("<a:font script=\"Jpan\" typeface=\"[^\"]*\"", "<a:font script=\"Jpan\" typeface=\"" + face + "\"");
-
-        // Empty east-asian slots (PowerPoint's theme) and the theme references.
-        out = out.replace("<a:ea typeface=\"\"", "<a:ea typeface=\"" + face + "\"");
-        out = out.replace("<a:ea typeface=\"+mn-ea\"", "<a:ea typeface=\"" + face + "\"");
-        out = out.replace("<a:ea typeface=\"+mj-ea\"", "<a:ea typeface=\"" + face + "\"");
-        out = out.replace("<a:latin typeface=\"\"", "<a:latin typeface=\"" + face + "\"");
-        out = out.replace("<a:cs typeface=\"\"", "<a:cs typeface=\"" + face + "\"");
-
-        // Word's document default and every run language.
-        out = out.replace(" w:eastAsiaTheme=\"minorEastAsia\"", "").replace(" w:eastAsiaTheme=\"majorEastAsia\"", "");
         out = out.replace("w:eastAsia=\"zh-CN\"", "w:eastAsia=\"" + tag + "\"");
         out = out.replace("w:eastAsia=\"en-US\"", "w:eastAsia=\"" + tag + "\"");
-
-        // PowerPoint / DrawingML run languages.
+        out = out.replace("w:val=\"en-US\"", "w:val=\"" + tag + "\"");
         out = out.replace("lang=\"zh-CN\"", "lang=\"" + tag + "\"");
         out = out.replace("lang=\"en-US\"", "lang=\"" + tag + "\"");
         out = out.replace("altLang=\"zh-CN\"", "altLang=\"" + tag + "\"");
         out = out.replace("altLang=\"en-US\"", "altLang=\"" + tag + "\"");
-
-        // Excel's per-font charset: 134 is GB2312, which marks the cells Simplified Chinese.
         out = out.replace("<charset val=\"134\"/>", "<charset val=\"" + charset + "\"/>");
-
         return out;
     }
 
-    private static final String[] CHINESE_FACES = { "宋体", "等线", "等线 Light", "新細明體", "SimSun", "DengXian" };
-
-    /**
-     * The face a new document should use on this phone. Android resolves "sans-serif" through the phone's own fallback
-     * chain, which ends in the face it has for the language, so one name covers every language and keeps the document
-     * meaningful when it is opened elsewhere. Simplified Chinese keeps 宋体, which its phones do carry.
-     */
-    private static String faceFor(Locale locale) {
-        if ("zh".equals(locale.getLanguage())) {
-            String country = locale.getCountry();
-            if (!"TW".equals(country) && !"HK".equals(country)) return "宋体";
-        }
+    /** One Android family for all three formats; Android supplies script-specific fallback glyphs. */
+    private static String faceFor() {
         return "sans-serif";
     }
 

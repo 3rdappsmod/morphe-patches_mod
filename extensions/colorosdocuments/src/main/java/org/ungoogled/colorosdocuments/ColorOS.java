@@ -166,13 +166,13 @@ public final class ColorOS {
 
     /**
      * The family the app should draw a document's font with. Called from the app's own resolver, `l.P`; see
-     * FontCompat. Answers the name unchanged for anything the phone can draw.
+     * FontCompat. Returns null when the app's existing resolver should handle the family.
      */
     public static String fontFamily(String family) {
         try {
-            return org.ungoogled.colorosdocuments.FontCompat.mapMissingFont(family);
+            return org.ungoogled.colorosdocuments.FontCompat.resolveFamily(family);
         } catch (Throwable e) {
-            return family;
+            return null;
         }
     }
 
