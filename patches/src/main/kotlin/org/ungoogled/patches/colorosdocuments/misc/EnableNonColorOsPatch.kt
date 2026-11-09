@@ -147,8 +147,8 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.tuneViewBuffer(
         else -> 1.5f
     }
     val heightMultiply = when (scale) {
-        "small" -> "mul-int/lit8 v0, v0, 0x2"
-        "half" -> "mul-int/lit8 v0, v0, 0x3\ndiv-int/lit8 v0, v0, 0x2"
+        "small" -> 2
+        "half" -> 3
         else -> null
     }
 
@@ -175,9 +175,17 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.tuneViewBuffer(
         setSize.replaceInstruction(width, "const/high16 v$register, ${widthFactor.toRawBits().toHexFloat()}")
     }
     if (heightMultiply != null) {
-        setSize.replaceInstruction(height, heightMultiply.replace("\n", "\n                "))
+        val multiply = instructions[height] as com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
+        val destination = multiply.registerA
+        setSize.replaceInstruction(height, "mul-int/lit8 v$destination, v${multiply.registerB}, $heightMultiply")
+        // replaceInstruction compiles only the first instruction. Insert the division separately,
+        // preserving the original int-to-float conversion immediately after the multiply.
+        if (scale == "half") {
+            setSize.addInstructions(height + 1, "div-int/lit8 v$destination, v$destination, 0x2")
+        }
     }
-    log.info("page buffer set to ${widthFactor}x wide (${heightMultiply ?: "x3 tall"})")
+    val heightFactor = when (scale) { "half" -> 1.5f; "small" -> 2.0f; else -> 3.0f }
+    log.info("page buffer set to ${widthFactor}x wide, ${heightFactor}x tall")
 
     if (interval != 17) {
         // ViewBufferManager.<clinit>: PAINT_TIME_DURATION = round(16.6667f).
