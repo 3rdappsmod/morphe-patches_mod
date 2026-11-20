@@ -587,6 +587,93 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.fixSpreadsheetJamoWidt
     log.info("spreadsheet jamo advances and inherited CJK seed protected")
 }
 
+/** The plain-text editor's paragraph model: `deleteParagraph` is where a composed syllable is replaced. */
+private object TxtParagraphModelFingerprint : Fingerprint(
+    definingClass = "Lcom/yozo/txtreader/model/TxtModel;",
+    name = "deleteParagraph",
+    returnType = "Lcom/yozo/txtreader/TxtEditorInfo;",
+    parameters = listOf("I", "I", "I", "I"),
+)
+
+/**
+ * The plain-text editor loses a line after Hangul composition.
+ *
+ * A Hangul IME sends `setComposingText` once per jamo: the syllable arrives as `ㅎ`, then `하`, then `한`. Each call
+ * replaces the previous composing text, and `TxtFileInputConnection.setComposingText` does that through
+ * `TxtScrollView$1.commitReplace` -> `TxtScrollView.J` -> `insert(String, SelectionInfo, TxtUndoInfo, Z)`, which first
+ * calls `backSpace(selection)` -> `delete(...)` -> `TxtModel.deleteParagraph`.
+ *
+ * That replace is a delete of the composing range followed by an insert at the cursor. `deleteParagraph` removes a
+ * paragraph by queueing it and splicing in the paragraph after it. A paragraph owns its trailing newline, so every
+ * paragraph but the last ends with `\n`; the last one does not. Deleting all of a paragraph's text therefore means two
+ * different things:
+ *
+ *  - any paragraph but the last: the newline goes too and the next paragraph moves up, a real line join;
+ *  - the last paragraph: only its text is deleted, but the same code still removes the paragraph from the list.
+ *
+ * A freshly started line holds only the composing syllable, so replacing `하` with `한` there is exactly that second
+ * case. The line is dropped, the cursor moves to the end of the previous one, and the replacement is inserted there.
+ * `TxtFileInputConnection` keeps its composing range in buffer coordinates, so the following call replaces the newline
+ * that ended the previous line. Reported on 17.1.32 (OnePlus 13T, Android 17, Gboard 18.6.3): `A` + enter + `한` shows
+ * `A하한`, and `사` + enter + `람` shows `사라람`. English is unaffected because `commitText` inserts instead of
+ * replacing a composing range.
+ *
+ * The fix keeps the last paragraph as an empty one when its whole text is cleared. Deleting a line break itself is
+ * untouched: an empty range is handled by the earlier branch, and a multi-paragraph delete never reaches this code, so
+ * lines still join. Clearing the only character of a line now leaves the empty line the user expects instead of merging
+ * it into the line above.
+ */
+private fun app.morphe.patcher.patch.BytecodePatchContext.keepLastTextParagraphOnClear() {
+    val method = TxtParagraphModelFingerprint.method
+    val instructions = method.instructions
+    if (method.implementation!!.registerCount != 16) {
+        throw PatchException("TxtModel.deleteParagraph register layout changed")
+    }
+
+    // `new ArrayList`, then `if-ne p3, p4`, `if-nez p1`, `if-ne p2, text.length()`, then the paragraph is queued:
+    // `invoke-virtual {v4, v0}, ArrayList->add(Object)`. Queuing is the only place that fills the removal list.
+    val queue = instructions.indices.firstOrNull {
+        val reference = (instructions[it] as? com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction)
+            ?.reference as? com.android.tools.smali.dexlib2.iface.reference.MethodReference
+        instructions[it].opcode == com.android.tools.smali.dexlib2.Opcode.INVOKE_VIRTUAL &&
+            reference?.definingClass == "Ljava/util/ArrayList;" &&
+            reference.name == "add" &&
+            reference.parameterTypes == listOf("Ljava/lang/Object;")
+    } ?: throw PatchException("TxtModel.deleteParagraph no longer queues paragraphs for removal")
+
+    // The queued paragraph is `v0`, the removal list `v4`, and the start paragraph is still `p3` here.
+    val queued = instructions[queue] as com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+    if (queued.registerC != 4 || queued.registerD != 0) {
+        throw PatchException("TxtModel.deleteParagraph queued paragraph is no longer v0 into v4")
+    }
+    // The test before the queue jumps to `move-object p4, v2` (no neighbour paragraph) when the delete is partial. That
+    // landing point also serves a whole-text clear of the last paragraph: the splice range is empty, so the paragraph
+    // stays in the list with empty text, and the caller receives it with cursor 0. The label names that instruction,
+    // not the test that jumps to it.
+    val skipQueue = (instructions[queue - 1] as? com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction)
+        ?.target?.location?.instruction
+    if (skipQueue == null || skipQueue.opcode != com.android.tools.smali.dexlib2.Opcode.MOVE_OBJECT ||
+        (skipQueue as com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction).registerB != 2) {
+        throw PatchException("TxtModel.deleteParagraph partial-delete branch changed")
+    }
+
+    // v6 is dead here (its last use was the empty-paragraph constructor above) and is an int scratch later in the
+    // method, p3 is still the start paragraph, and no object register is written. The queue add stays after the guard,
+    // so every earlier paragraph keeps the stock behaviour.
+    method.addInstructionsWithLabels(
+        queue,
+        """
+            iget-object v6, p0, Lcom/yozo/txtreader/model/TxtModel;->allParagraphs:Ljava/util/List;
+            invoke-interface {v6}, Ljava/util/List;->size()I
+            move-result v6
+            add-int/lit8 v6, v6, -0x1
+            if-eq p3, v6, :pagani_txt_keep_last
+        """.trimIndent(),
+        app.morphe.patcher.util.smali.ExternalLabel("pagani_txt_keep_last", skipQueue),
+    )
+    log.info("TXT last-paragraph clear keeps an empty line (deleteParagraph index $queue)")
+}
+
 /**
  * Sends a Chinese face's width table lookup to "sans-serif", which `s.c` does not know, so it answers null and
  * `EIOFontMetrics.getReferenceCharWidth` measures the face the app actually draws. Without this the drawn font and the
@@ -738,6 +825,9 @@ val enableNonColorOsPatch = bytecodePatch(
         dropMissingFontWidthTables()
         fixHangulJamoWidths()
         fixSpreadsheetJamoWidths()
+
+        // Plain-text editor: replacing a composing syllable on the last line must not remove that line.
+        keepLastTextParagraphOnClear()
 
         log.info("ColorOS framework classes answered by the extension")
     }
