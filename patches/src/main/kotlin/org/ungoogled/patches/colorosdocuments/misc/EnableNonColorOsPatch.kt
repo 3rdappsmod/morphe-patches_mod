@@ -14,10 +14,17 @@ import app.morphe.patcher.patch.resourcePatch
 import app.morphe.patcher.patch.stringOption
 import app.morphe.patcher.util.proxy.mutableTypes.MutableField.Companion.toMutable
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
+import app.morphe.patcher.util.smali.ExternalLabel
 import com.android.tools.smali.dexlib2.AccessFlags
+import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction21c
+import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction21t
+import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction22t
 import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction35c
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.immutable.ImmutableField
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
@@ -598,30 +605,12 @@ private object TxtParagraphModelFingerprint : Fingerprint(
 /**
  * The plain-text editor loses a line after Hangul composition.
  *
- * A Hangul IME sends `setComposingText` once per jamo: the syllable arrives as `ㅎ`, then `하`, then `한`. Each call
- * replaces the previous composing text, and `TxtFileInputConnection.setComposingText` does that through
- * `TxtScrollView$1.commitReplace` -> `TxtScrollView.J` -> `insert(String, SelectionInfo, TxtUndoInfo, Z)`, which first
- * calls `backSpace(selection)` -> `delete(...)` -> `TxtModel.deleteParagraph`.
+ * TXT composition updates delete the previous composing range before inserting the next value. When that range covers
+ * the final paragraph, `deleteParagraph` removes the paragraph and returns a cursor on the previous line. This can
+ * desynchronize the model cursor from the IME's composing range, matching the reported `A` + Enter + `한` → `A하한`.
  *
- * That replace is a delete of the composing range followed by an insert at the cursor. `deleteParagraph` removes a
- * paragraph by queueing it and splicing in the paragraph after it. A paragraph owns its trailing newline, so every
- * paragraph but the last ends with `\n`; the last one does not. Deleting all of a paragraph's text therefore means two
- * different things:
- *
- *  - any paragraph but the last: the newline goes too and the next paragraph moves up, a real line join;
- *  - the last paragraph: only its text is deleted, but the same code still removes the paragraph from the list.
- *
- * A freshly started line holds only the composing syllable, so replacing `하` with `한` there is exactly that second
- * case. The line is dropped, the cursor moves to the end of the previous one, and the replacement is inserted there.
- * `TxtFileInputConnection` keeps its composing range in buffer coordinates, so the following call replaces the newline
- * that ended the previous line. Reported on 17.1.32 (OnePlus 13T, Android 17, Gboard 18.6.3): `A` + enter + `한` shows
- * `A하한`, and `사` + enter + `람` shows `사라람`. English is unaffected because `commitText` inserts instead of
- * replacing a composing range.
- *
- * The fix keeps the last paragraph as an empty one when its whole text is cleared. Deleting a line break itself is
- * untouched: an empty range is handled by the earlier branch, and a multi-paragraph delete never reaches this code, so
- * lines still join. Clearing the only character of a line now leaves the empty line the user expects instead of merging
- * it into the line above.
+ * Keep the final paragraph and reuse the partial-delete splice, which empties its text and returns offset 0. The
+ * separate branches for joining at the start of a line and deleting across paragraphs are unchanged.
  */
 private fun app.morphe.patcher.patch.BytecodePatchContext.keepLastTextParagraphOnClear() {
     val method = TxtParagraphModelFingerprint.method
@@ -630,30 +619,33 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.keepLastTextParagraphO
         throw PatchException("TxtModel.deleteParagraph register layout changed")
     }
 
-    // `new ArrayList`, then `if-ne p3, p4`, `if-nez p1`, `if-ne p2, text.length()`, then the paragraph is queued:
-    // `invoke-virtual {v4, v0}, ArrayList->add(Object)`. Queuing is the only place that fills the removal list.
-    val queue = instructions.indices.firstOrNull {
-        val reference = (instructions[it] as? com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction)
-            ?.reference as? com.android.tools.smali.dexlib2.iface.reference.MethodReference
-        instructions[it].opcode == com.android.tools.smali.dexlib2.Opcode.INVOKE_VIRTUAL &&
-            reference?.definingClass == "Ljava/util/ArrayList;" &&
-            reference.name == "add" &&
-            reference.parameterTypes == listOf("Ljava/lang/Object;")
-    } ?: throw PatchException("TxtModel.deleteParagraph no longer queues paragraphs for removal")
-
-    // The queued paragraph is `v0`, the removal list `v4`, and the start paragraph is still `p3` here.
-    val queued = instructions[queue] as com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
-    if (queued.registerC != 4 || queued.registerD != 0) {
-        throw PatchException("TxtModel.deleteParagraph queued paragraph is no longer v0 into v4")
+    // In 17.1.32, p1..p4 are v12..v15. Only match the queue when it follows the complete same-paragraph,
+    // zero-start, full-length test. Other ArrayList.add calls queue paragraphs for multi-paragraph deletes.
+    val queues = (6 until instructions.size).filter { i ->
+        val sameParagraph = instructions[i - 6] as? BuilderInstruction22t
+        val zeroStart = instructions[i - 5] as? BuilderInstruction21t
+        val text = instructions[i - 4]
+        val length = instructions[i - 3] as? BuilderInstruction35c
+        val result = instructions[i - 2] as? OneRegisterInstruction
+        val fullLength = instructions[i - 1] as? BuilderInstruction22t
+        val add = instructions[i] as? BuilderInstruction35c
+        sameParagraph?.opcode == Opcode.IF_NE && sameParagraph.registerA == 14 && sameParagraph.registerB == 15 &&
+            zeroStart?.opcode == Opcode.IF_NEZ && zeroStart.registerA == 12 &&
+            text.opcode == Opcode.IGET_OBJECT && text is TwoRegisterInstruction &&
+            text.registerA == 15 && text.registerB == 0 &&
+            (text as ReferenceInstruction).reference.toString() == "Lcom/yozo/txtreader/Paragraph;->text:Ljava/lang/String;" &&
+            length?.opcode == Opcode.INVOKE_VIRTUAL && length.registerCount == 1 && length.registerC == 15 &&
+            length.reference.toString() == "Ljava/lang/String;->length()I" &&
+            result?.opcode == Opcode.MOVE_RESULT && result.registerA == 15 &&
+            fullLength?.opcode == Opcode.IF_NE && fullLength.registerA == 13 && fullLength.registerB == 15 &&
+            fullLength.target.location.index == zeroStart.target.location.index &&
+            add?.opcode == Opcode.INVOKE_VIRTUAL && add.registerCount == 2 && add.registerC == 4 && add.registerD == 0 &&
+            add.reference.toString() == "Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z"
     }
-    // The test before the queue jumps to `move-object p4, v2` (no neighbour paragraph) when the delete is partial. That
-    // landing point also serves a whole-text clear of the last paragraph: the splice range is empty, so the paragraph
-    // stays in the list with empty text, and the caller receives it with cursor 0. The label names that instruction,
-    // not the test that jumps to it.
-    val skipQueue = (instructions[queue - 1] as? com.android.tools.smali.dexlib2.builder.BuilderOffsetInstruction)
-        ?.target?.location?.instruction
-    if (skipQueue == null || skipQueue.opcode != com.android.tools.smali.dexlib2.Opcode.MOVE_OBJECT ||
-        (skipQueue as com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction).registerB != 2) {
+    val queue = queues.singleOrNull() ?: throw PatchException("Expected one TXT whole-paragraph removal site, found ${queues.size}")
+    val skipQueue = (instructions[queue - 1] as BuilderInstruction22t).target.location.instruction
+    if (skipQueue !is TwoRegisterInstruction || skipQueue.opcode != Opcode.MOVE_OBJECT ||
+        skipQueue.registerA != 15 || skipQueue.registerB != 2) {
         throw PatchException("TxtModel.deleteParagraph partial-delete branch changed")
     }
 
@@ -669,7 +661,7 @@ private fun app.morphe.patcher.patch.BytecodePatchContext.keepLastTextParagraphO
             add-int/lit8 v6, v6, -0x1
             if-eq p3, v6, :pagani_txt_keep_last
         """.trimIndent(),
-        app.morphe.patcher.util.smali.ExternalLabel("pagani_txt_keep_last", skipQueue),
+        ExternalLabel("pagani_txt_keep_last", skipQueue),
     )
     log.info("TXT last-paragraph clear keeps an empty line (deleteParagraph index $queue)")
 }
